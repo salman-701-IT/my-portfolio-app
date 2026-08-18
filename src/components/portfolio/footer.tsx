@@ -10,6 +10,8 @@ import {
   ArrowUp,
   Mail,
   Send,
+  ExternalLink,
+  type LucideIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
@@ -19,21 +21,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { newsletterSchema, type NewsletterInput } from "@/lib/validations";
 
-const QUICK_LINKS = [
+const NAV_LINKS = [
   { label: "About", href: "#about" },
   { label: "Skills", href: "#skills" },
-  { label: "Services", href: "#services" },
   { label: "Work", href: "#work" },
   { label: "Experience", href: "#experience" },
-  { label: "Testimonials", href: "#testimonials" },
   { label: "Contact", href: "#contact" },
 ];
 
-const SOCIALS = [
-  { label: "GitHub", href: "https://github.com", Icon: Github },
-  { label: "LinkedIn", href: "https://linkedin.com", Icon: Linkedin },
-  { label: "X (Twitter)", href: "https://x.com", Icon: Twitter },
-  { label: "Dribbble", href: "https://dribbble.com", Icon: Dribbble },
+const SOCIALS: { label: string; href: string; Icon: LucideIcon }[] = [
+  { label: "GitHub", href: "#", Icon: Github },
+  { label: "LinkedIn", href: "#", Icon: Linkedin },
+  { label: "X (Twitter)", href: "#", Icon: Twitter },
+  { label: "Dribbble", href: "#", Icon: Dribbble },
 ];
 
 function NewsletterForm() {
@@ -56,7 +56,7 @@ function NewsletterForm() {
       });
       const data = (await res.json()) as { ok: boolean; error?: string };
       if (!res.ok || !data.ok) {
-        if (data.error?.includes("Unique")) {
+        if (res.status === 409 || data.error?.toLowerCase().includes("unique")) {
           toast.info("You're already subscribed!", {
             description: "Thanks for the enthusiasm — see you in the next issue.",
           });
@@ -98,7 +98,7 @@ function NewsletterForm() {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="h-10 bg-accent-emerald text-accent-emerald-foreground hover:bg-accent-emerald/90"
+          className="h-10 bg-accent-gold text-accent-gold-foreground hover:bg-accent-gold/90"
           aria-label="Subscribe"
         >
           <Send className="size-4" />
@@ -120,60 +120,68 @@ export function Footer() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleSocial = (label: string) => {
+    toast.info("Link coming soon", {
+      description: `${label} profile will be live shortly.`,
+    });
+  };
+
   return (
     <footer className="mt-auto border-t border-border/70 bg-background/60">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr]">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           {/* Brand + socials */}
           <div className="flex flex-col gap-4">
             <Link
               href="#home"
               className="flex w-fit items-center gap-2.5"
-              aria-label="Salman Khan — home"
+              aria-label="Salman Khan S. — home"
             >
-              <span className="flex size-9 items-center justify-center rounded-xl border border-accent-emerald/40 bg-accent-emerald/10 font-mono text-sm font-bold text-accent-emerald shadow-[0_0_20px_-6px_var(--accent-emerald)]">
+              <span className="flex size-9 items-center justify-center rounded-xl border border-accent-gold/40 bg-accent-gold/10 font-mono text-sm font-bold text-accent-gold shadow-[0_0_20px_-6px_var(--accent-gold)]">
                 SK
               </span>
               <span className="flex flex-col leading-none">
-                <span className="text-sm font-semibold">Salman Khan</span>
+                <span className="text-sm font-semibold">Salman Khan S.</span>
                 <span className="text-[11px] text-muted-foreground">
-                  Full-Stack Developer
+                  AI Engineer · Founder
                 </span>
               </span>
             </Link>
             <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Full-stack developer and UI designer crafting fast, accessible,
-              and genuinely useful products. Currently based in Bengaluru,
-              available worldwide.
+              AI engineer &amp; founder building premium, practical tech —
+              browser-first AI/CV, full-stack web, and 3D interactive
+              experiences.
             </p>
             <ul className="flex flex-wrap gap-2">
-              {SOCIALS.map(({ label, href, Icon }) => (
+              {SOCIALS.map(({ label, Icon }) => (
                 <li key={label}>
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSocial(label);
+                    }}
                     aria-label={label}
-                    className="group flex size-9 items-center justify-center rounded-lg border border-border/70 bg-card/40 text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-accent-emerald/60 hover:text-accent-emerald"
+                    className="group flex size-9 items-center justify-center rounded-lg border border-border/70 bg-card/40 text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-accent-gold/60 hover:text-accent-gold"
                   >
                     <Icon className="size-4" />
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Quick links */}
-          <nav aria-label="Footer" className="flex flex-col gap-4">
+          {/* Navigate */}
+          <nav aria-label="Footer navigate" className="flex flex-col gap-4">
             <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Quick Links
+              Navigate
             </h3>
-            <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
-              {QUICK_LINKS.map((link) => (
+            <ul className="flex flex-col gap-2">
+              {NAV_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-accent-emerald"
+                    className="text-sm text-muted-foreground transition-colors hover:text-accent-gold"
                   >
                     {link.label}
                   </Link>
@@ -182,14 +190,35 @@ export function Footer() {
             </ul>
           </nav>
 
+          {/* Agency */}
+          <div className="flex flex-col gap-4">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Agency
+            </h3>
+            <div className="flex flex-col gap-2">
+              <a
+                href="https://yumarisagency.web.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-accent-gold"
+              >
+                Yumaris Agency
+                <ExternalLink className="size-3.5" />
+              </a>
+              <p className="text-xs text-muted-foreground">
+                Online Learning · Web Design · Branding
+              </p>
+            </div>
+          </div>
+
           {/* Newsletter */}
           <div className="flex flex-col gap-4">
             <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               Newsletter
             </h3>
             <p className="text-sm text-muted-foreground">
-              Occasional notes on building, design, and code. No spam, unsubscribe
-              anytime.
+              Occasional notes on building, design, and code. No spam,
+              unsubscribe anytime.
             </p>
             <NewsletterForm />
           </div>
@@ -197,14 +226,13 @@ export function Footer() {
 
         <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-border/70 pt-6 sm:flex-row">
           <p className="text-center text-xs text-muted-foreground sm:text-left">
-            © {new Date().getFullYear()} Salman Khan. Crafted with care in
-            Bengaluru.
+            © 2025 Salman Khan S. · Crafted with care in Chennai.
           </p>
           <Button
             variant="ghost"
             size="sm"
             onClick={scrollTop}
-            className="text-muted-foreground hover:text-accent-emerald"
+            className="text-muted-foreground hover:text-accent-gold"
           >
             <ArrowUp className="size-4" />
             Back to top

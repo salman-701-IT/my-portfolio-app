@@ -5,7 +5,7 @@ import { Skills } from "@/components/portfolio/skills";
 import { Services } from "@/components/portfolio/services";
 import { Projects } from "@/components/portfolio/projects";
 import { Experience } from "@/components/portfolio/experience";
-import { Testimonials } from "@/components/portfolio/testimonials";
+import { Education } from "@/components/portfolio/education";
 import { Contact } from "@/components/portfolio/contact";
 import { Footer } from "@/components/portfolio/footer";
 import { ScrollProgress } from "@/components/portfolio/scroll-progress";
@@ -22,7 +22,7 @@ export default function Home() {
         <Services />
         <Projects />
         <Experience />
-        <Testimonials />
+        <Education />
         <Contact />
       </main>
       <Footer />

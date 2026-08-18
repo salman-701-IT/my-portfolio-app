@@ -33,8 +33,8 @@ export function SectionHeading({
       )}
     >
       {eyebrow ? (
-        <span className="inline-flex items-center gap-2 rounded-full border border-accent-emerald/30 bg-accent-emerald/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-accent-emerald">
-          <span className="size-1.5 rounded-full bg-accent-emerald" />
+        <span className="inline-flex items-center gap-2 rounded-full border border-accent-gold/30 bg-accent-gold/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-accent-gold">
+          <span className="size-1.5 rounded-full bg-accent-gold" />
           {eyebrow}
         </span>
       ) : null}

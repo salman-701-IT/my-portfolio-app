@@ -20,7 +20,7 @@ import {
 import { SectionHeading } from "./section-heading";
 import { cn } from "@/lib/utils";
 
-type Category = "Web App" | "Mobile" | "SaaS" | "Open Source";
+type Category = "AI/ML" | "Web App" | "3D/Creative" | "Agency";
 
 interface Project {
   id: number;
@@ -31,125 +31,87 @@ interface Project {
   image: string;
   categories: Category[];
   stack: string[];
-  highlights: string[];
   liveUrl?: string;
-  sourceUrl?: string;
+  liveExternal?: boolean;
 }
 
 const PROJECTS: Project[] = [
   {
     id: 1,
-    title: "FinTrack",
-    tagline: "Fintech Dashboard",
+    title: "Face Liveness Detection",
+    tagline: "AI · Computer Vision",
     description:
-      "Real-time financial analytics dashboard with predictive insights.",
+      "Browser-based face liveness verification using TensorFlow.js, BlazeFace & ONNX.",
     longDescription:
-      "FinTrack is a real-time financial analytics dashboard for ops teams at a Series-B fintech. It ingests transaction streams, surfaces anomalies with predictive insights, and lets analysts drill from a portfolio view down to individual ledger entries in under two clicks. Built to render 100k+ rows smoothly using virtualization and server-side aggregations.",
-    image: "/images/project-1.png",
-    categories: ["Web App", "SaaS"],
-    stack: ["React", "Next.js", "Prisma", "Recharts"],
-    highlights: [
-      "Sub-200ms p95 dashboard loads via edge caching",
-      "Virtualized tables for 100k+ rows",
-      "Role-based access with audit logging",
-    ],
-    liveUrl: "#",
-    sourceUrl: "#",
+      "A lightweight, browser-first face liveness detection system. Uses TensorFlow.js with the BlazeFace model and ONNX runtime for real-time webcam face detection, landmark tracking, and blink-based liveness verification. Built for UIDAI-style challenge contexts with a target model size under 5 MB and inference under 500 ms — no server round-trips, no PyTorch.",
+    image: "/images/project-liveness.png",
+    categories: ["AI/ML"],
+    stack: ["TensorFlow.js", "BlazeFace", "ONNX", "Computer Vision", "JavaScript"],
   },
   {
     id: 2,
-    title: "Nexus AI",
-    tagline: "Chat Assistant",
+    title: "LogoMatic AI",
+    tagline: "AI · Creative",
     description:
-      "Multi-modal AI chat with streaming responses and voice input.",
+      "AI-powered logo generator producing brand-ready logos from text prompts.",
     longDescription:
-      "Nexus AI is a multi-modal chat assistant with streaming responses, voice input, and tool-calling for browsing the web and executing user-defined functions. The frontend streams tokens via Server-Sent Events with optimistic UI, while the backend coordinates model routing, rate limiting, and per-tenant usage tracking.",
-    image: "/images/project-2.png",
-    categories: ["Web App"],
-    stack: ["Next.js", "OpenAI", "WebSocket", "Tailwind"],
-    highlights: [
-      "Token streaming with optimistic rendering",
-      "Voice input via WebRTC + Whisper",
-      "Per-tenant rate limiting & usage meters",
-    ],
-    liveUrl: "#",
-    sourceUrl: "#",
+      "An AI logo generation tool that turns text prompts into editable, brand-ready logos with multiple variants and SVG/PNG export. Combines a Python/FastAPI backend with a React + Tailwind frontend for a smooth creative workflow.",
+    image: "/images/project-logomatic.png",
+    categories: ["AI/ML"],
+    stack: ["Python", "FastAPI", "React", "Tailwind CSS", "AI"],
   },
   {
     id: 3,
-    title: "ShopFlow",
-    tagline: "E-commerce App",
-    description: "Cross-platform shopping experience with one-tap checkout.",
+    title: "WorkVision",
+    tagline: "Web App · Analytics",
+    description:
+      "AI-powered performance analysis turning raw data into clear insights.",
     longDescription:
-      "ShopFlow is a cross-platform e-commerce app focused on reducing checkout friction. A one-tap checkout flow, native payment sheets, and an offline-first cart drove a 23% lift in conversion in the first quarter post-launch. Built with React Native, Redux, and Stripe for both iOS and Android from a single codebase.",
-    image: "/images/project-3.png",
-    categories: ["Mobile"],
-    stack: ["React Native", "Stripe", "Redux"],
-    highlights: [
-      "One-tap checkout with native payment sheets",
-      "Offline-first cart with background sync",
-      "Push notifications & deep linking",
-    ],
-    liveUrl: "#",
-    sourceUrl: "#",
+      "A performance analytics platform that transforms workplace data into interactive dashboards and predictive insights. Built with React, Node.js/Express, and PostgreSQL with Recharts visualizations.",
+    image: "/images/project-workvision.png",
+    categories: ["Web App"],
+    stack: ["React", "Node.js", "Express", "PostgreSQL", "Recharts"],
   },
   {
     id: 4,
-    title: "MediCare",
-    tagline: "Health Analytics",
-    description: "HIPAA-compliant patient analytics for clinics.",
+    title: "Yumaris Agency Platform",
+    tagline: "Agency · Brand",
+    description:
+      "Founded & led Yumaris Agency — branding, web, and learning services.",
     longDescription:
-      "MediCare delivers HIPAA-compliant patient analytics for mid-sized clinics. It aggregates EHR data, visualizes population health, and flags patients at risk of readmission. Every layer — from row-level security in PostgreSQL to audit logging and PHI redaction in logs — was built to satisfy a real-world compliance review.",
-    image: "/images/project-4.png",
-    categories: ["SaaS"],
-    stack: ["Next.js", "D3.js", "Node.js", "PostgreSQL"],
-    highlights: [
-      "HIPAA-aligned architecture & audit logs",
-      "Row-level security in PostgreSQL",
-      "Population health risk scoring",
-    ],
-    liveUrl: "#",
-    sourceUrl: "#",
+      "Founded and lead Yumaris Agency, an online platform offering online learning, website design, photo & video editing, internship packages, and branding solutions. Delivered the agency website, service descriptions, QR-code-based service promotions, posters, and social media content.",
+    image: "/images/project-yumaris.png",
+    categories: ["Agency"],
+    stack: ["React", "Firebase", "Tailwind CSS", "Figma", "Branding"],
+    liveUrl: "https://yumarisagency.web.app",
+    liveExternal: true,
   },
   {
     id: 5,
-    title: "EstateHub",
-    tagline: "Real Estate Platform",
-    description: "Property discovery with interactive maps and AR previews.",
+    title: "Voice-Controlled Gaming Tools",
+    tagline: "3D/Creative · Accessibility",
+    description:
+      "Voice-driven game controls with real-time waveform visualization.",
     longDescription:
-      "EstateHub is a property discovery platform combining interactive Mapbox maps with AR room previews. Buyers can drop into a neighborhood, filter by school district and walk score, and preview unfurnished rooms with their own furniture using WebXR. Listing agents get a CMS-driven workflow with media management built in.",
-    image: "/images/project-5.png",
-    categories: ["Web App"],
-    stack: ["Next.js", "Mapbox", "Prisma"],
-    highlights: [
-      "Interactive Mapbox with custom tiles",
-      "AR room previews via WebXR",
-      "CMS-driven agent workflow",
-    ],
-    liveUrl: "#",
-    sourceUrl: "#",
+      "A toolkit enabling hands-free game interaction through voice commands, built with the Web Speech API and real-time audio waveform visualization. Designed for accessibility and immersive play.",
+    image: "/images/project-voicegame.png",
+    categories: ["3D/Creative"],
+    stack: ["JavaScript", "Web Speech API", "Three.js", "Canvas"],
   },
   {
     id: 6,
-    title: "LearnLoop",
-    tagline: "EdTech Platform",
-    description: "Open-source collaborative learning with live classrooms.",
+    title: "3D Interactive Web Experience",
+    tagline: "3D/Creative · Motion",
+    description: "Immersive 3D website with scroll-driven camera motion.",
     longDescription:
-      "LearnLoop is an open-source collaborative learning platform with live classrooms, shared whiteboards, and breakout rooms — all running on WebRTC. Designed to be self-hostable by schools and nonprofits, it ships with a documented deployment story, IaC, and accessibility-first defaults for low-bandwidth environments.",
-    image: "/images/project-6.png",
-    categories: ["Open Source"],
-    stack: ["React", "Node.js", "WebRTC"],
-    highlights: [
-      "Live classrooms on WebRTC with breakouts",
-      "Self-hostable with one-command IaC",
-      "Low-bandwidth & a11y-first defaults",
-    ],
-    liveUrl: "#",
-    sourceUrl: "#",
+      "An immersive 3D website combining Three.js scenes, scroll-driven camera motion, Framer Motion transitions, Lottie micro-animations, and glassmorphism UI for a premium interactive feel.",
+    image: "/images/project-3dweb.png",
+    categories: ["3D/Creative"],
+    stack: ["Three.js", "Framer Motion", "Lottie", "React", "Vite"],
   },
 ];
 
-const FILTERS = ["All", "Web App", "Mobile", "SaaS", "Open Source"] as const;
+const FILTERS = ["All", "AI/ML", "Web App", "3D/Creative", "Agency"] as const;
 type Filter = (typeof FILTERS)[number];
 
 export function Projects() {
@@ -164,7 +126,7 @@ export function Projects() {
 
   const handleLink = (kind: "live" | "source", title: string) => {
     toast.info(`${kind === "live" ? "Live demo" : "Source code"} for ${title}`, {
-      description: "Links are placeholders on this portfolio demo.",
+      description: "Link coming soon — drop me a message and I'll share it.",
     });
   };
 
@@ -176,13 +138,14 @@ export function Projects() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          eyebrow="Work"
+          eyebrow="Selected Work"
           title={
             <span id="work-heading">
-              Selected <span className="text-gradient-emerald">projects</span>
+              Projects I&apos;m{" "}
+              <span className="text-gradient-gold">proud of</span>
             </span>
           }
-          description="A mix of client work, open-source, and product builds — each shipped to production."
+          description="A mix of browser-first AI/CV, full-stack apps, 3D experiences, and agency builds — each shipped and documented."
         />
 
         {/* Filter tabs */}
@@ -196,8 +159,8 @@ export function Projects() {
               className={cn(
                 "relative rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
                 filter === f
-                  ? "border-accent-emerald/60 bg-accent-emerald/10 text-accent-emerald"
-                  : "border-border/70 bg-card/40 text-muted-foreground hover:border-accent-emerald/40 hover:text-foreground",
+                  ? "border-accent-gold/60 bg-accent-gold/10 text-accent-gold"
+                  : "border-border/70 bg-card/40 text-muted-foreground hover:border-accent-gold/40 hover:text-foreground",
               )}
             >
               {f}
@@ -221,7 +184,7 @@ export function Projects() {
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="group"
               >
-                <Card className="group relative h-full overflow-hidden p-0 transition-all hover:-translate-y-1.5 hover:border-accent-emerald/50 hover:shadow-[0_0_44px_-14px_var(--accent-emerald)]">
+                <Card className="group relative h-full overflow-hidden p-0 transition-all hover:-translate-y-1.5 hover:border-accent-gold/50 hover:shadow-[0_0_44px_-14px_var(--accent-gold)]">
                   <button
                     type="button"
                     onClick={() => setSelected(project)}
@@ -242,7 +205,7 @@ export function Projects() {
                           <Badge
                             key={c}
                             variant="secondary"
-                            className="border-accent-emerald/30 bg-background/80 text-[11px] text-accent-emerald backdrop-blur"
+                            className="border-accent-gold/30 bg-background/80 text-[11px] text-accent-gold backdrop-blur"
                           >
                             {c}
                           </Badge>
@@ -250,14 +213,14 @@ export function Projects() {
                       </div>
                       <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between gap-3">
                         <div className="flex flex-col">
-                          <span className="text-[11px] font-medium uppercase tracking-wide text-accent-emerald">
+                          <span className="text-[11px] font-medium uppercase tracking-wide text-accent-gold">
                             {project.tagline}
                           </span>
                           <h3 className="text-lg font-semibold leading-tight tracking-tight">
                             {project.title}
                           </h3>
                         </div>
-                        <span className="flex size-8 shrink-0 items-center justify-center rounded-full border border-accent-emerald/40 bg-background/80 text-accent-emerald opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        <span className="flex size-8 shrink-0 items-center justify-center rounded-full border border-accent-gold/40 bg-background/80 text-accent-gold opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                           <ArrowUpRight className="size-4" />
                         </span>
                       </div>
@@ -279,15 +242,33 @@ export function Projects() {
                       ))}
                     </div>
                     <div className="mt-1 flex items-center gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="h-8 flex-1 border-accent-emerald/30 hover:bg-accent-emerald/10 hover:text-accent-emerald"
-                        onClick={() => handleLink("live", project.title)}
-                      >
-                        <ExternalLink className="size-3.5" />
-                        Live Demo
-                      </Button>
+                      {project.liveExternal && project.liveUrl ? (
+                        <Button
+                          asChild
+                          size="sm"
+                          variant="outline"
+                          className="h-8 flex-1 border-accent-gold/30 hover:bg-accent-gold/10 hover:text-accent-gold"
+                        >
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <ExternalLink className="size-3.5" />
+                            Live Demo
+                          </a>
+                        </Button>
+                      ) : (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-8 flex-1 border-accent-gold/30 hover:bg-accent-gold/10 hover:text-accent-gold"
+                          onClick={() => handleLink("live", project.title)}
+                        >
+                          <ExternalLink className="size-3.5" />
+                          Live Demo
+                        </Button>
+                      )}
                       <Button
                         size="sm"
                         variant="ghost"
@@ -325,7 +306,7 @@ export function Projects() {
                     <Badge
                       key={c}
                       variant="secondary"
-                      className="border-accent-emerald/30 bg-background/80 text-accent-emerald backdrop-blur"
+                      className="border-accent-gold/30 bg-background/80 text-accent-gold backdrop-blur"
                     >
                       {c}
                     </Badge>
@@ -345,23 +326,7 @@ export function Projects() {
               </DialogHeader>
               <div className="flex flex-col gap-4 px-6">
                 <div className="flex flex-col gap-2">
-                  <h4 className="text-xs font-semibold uppercase tracking-wide text-accent-emerald">
-                    Highlights
-                  </h4>
-                  <ul className="flex flex-col gap-1.5">
-                    {selected.highlights.map((h) => (
-                      <li
-                        key={h}
-                        className="flex items-start gap-2 text-sm text-foreground/90"
-                      >
-                        <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent-emerald" />
-                        {h}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <h4 className="text-xs font-semibold uppercase tracking-wide text-accent-emerald">
+                  <h4 className="text-xs font-semibold uppercase tracking-wide text-accent-gold">
                     Tech stack
                   </h4>
                   <div className="flex flex-wrap gap-1.5">
@@ -379,19 +344,32 @@ export function Projects() {
               <DialogFooter className="px-6 pb-6">
                 <Button
                   variant="outline"
-                  className="border-accent-emerald/30 hover:bg-accent-emerald/10 hover:text-accent-emerald"
+                  className="border-accent-gold/30 hover:bg-accent-gold/10 hover:text-accent-gold"
                   onClick={() => handleLink("source", selected.title)}
                 >
                   <Github className="size-4" />
                   Source
                 </Button>
-                <Button
-                  className="bg-accent-emerald text-accent-emerald-foreground hover:bg-accent-emerald/90"
-                  onClick={() => handleLink("live", selected.title)}
-                >
-                  <ExternalLink className="size-4" />
-                  Live Demo
-                </Button>
+                {selected.liveExternal && selected.liveUrl ? (
+                  <Button asChild className="bg-accent-gold text-accent-gold-foreground hover:bg-accent-gold/90">
+                    <a
+                      href={selected.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLink className="size-4" />
+                      Live Demo
+                    </a>
+                  </Button>
+                ) : (
+                  <Button
+                    className="bg-accent-gold text-accent-gold-foreground hover:bg-accent-gold/90"
+                    onClick={() => handleLink("live", selected.title)}
+                  >
+                    <ExternalLink className="size-4" />
+                    Live Demo
+                  </Button>
+                )}
               </DialogFooter>
             </>
           ) : null}

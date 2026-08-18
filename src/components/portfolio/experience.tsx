@@ -18,47 +18,47 @@ interface TimelineEntry {
 const ENTRIES: TimelineEntry[] = [
   {
     period: "2023 — Present",
-    role: "Senior Full-Stack Engineer",
-    company: "Nimbus Labs",
+    role: "Founder & CEO",
+    company: "Yumaris Agency, Chennai",
     type: "work",
     bullets: [
-      "Lead an 8-engineer team building a multi-tenant cloud SaaS; shipped 12+ customer-facing features.",
-      "Cut infrastructure cost by 35% through right-sizing, edge caching, and a queue-based ingestion rewrite.",
+      "Founded Yumaris Agency offering online learning, website design, photo/video editing, internship packages, and branding solutions.",
+      "Led agency branding, posters, QR-code service promotions, and social content; built and maintain the agency website.",
     ],
-    stack: ["Next.js", "TypeScript", "AWS", "PostgreSQL", "NestJS"],
+    stack: ["React", "Firebase", "Tailwind CSS", "Figma"],
   },
   {
-    period: "2021 — 2023",
-    role: "Full-Stack Developer",
-    company: "Vertex Digital",
-    type: "work",
-    bullets: [
-      "Built client web apps in Next.js and Node across fintech, health, and D2C commerce.",
-      "Mentored 4 junior developers and introduced a typed-API-first workflow that cut integration bugs by 40%.",
-    ],
-    stack: ["Next.js", "Node.js", "GraphQL", "Prisma", "Vercel"],
-  },
-  {
-    period: "2019 — 2021",
-    role: "Frontend Engineer",
-    company: "PixelForge",
-    type: "work",
-    bullets: [
-      "Crafted design systems and high-conversion marketing sites used by 500k+ monthly visitors.",
-      "Owned the component library and motion guidelines adopted across three product squads.",
-    ],
-    stack: ["React", "TypeScript", "Figma", "Storybook", "Webpack"],
-  },
-  {
-    period: "2018 — 2019",
-    role: "Software Engineer Intern",
-    company: "TechSpark",
+    period: "2023",
+    role: "DevOps & Monitoring Intern",
+    company: "Apdeops Technologies Pvt. Ltd.",
     type: "intern",
     bullets: [
-      "Shipped internal tools and automation scripts that saved the ops team ~10 hours per week.",
-      "Wrote the first end-to-end test suite for the customer-onboarding flow.",
+      "Rotated across RIM, Monitoring, DevOps, and Engineering teams.",
+      "Worked on Zabbix monitoring, RMAN backup processes, and deployment pipelines.",
     ],
-    stack: ["JavaScript", "Node.js", "PostgreSQL", "Cypress"],
+    stack: ["Zabbix", "RMAN", "DevOps", "Linux"],
+  },
+  {
+    period: "2022",
+    role: "Java Full Stack Intern",
+    company: "Main Flow Services and Technologies Pvt. Ltd.",
+    type: "intern",
+    bullets: [
+      "Built full-stack web features using Java, JDBC, and front-end technologies.",
+      "Completed real-world Java full-stack web development assignments.",
+    ],
+    stack: ["Java", "JDBC", "HTML/CSS", "JavaScript"],
+  },
+  {
+    period: "2022",
+    role: "Intern",
+    company: "CODSOFT",
+    type: "intern",
+    bullets: [
+      "Completed internship project work and documentation.",
+      "Built portfolio-ready applications and reports.",
+    ],
+    stack: ["Java", "Web Development"],
   },
 ];
 
@@ -85,7 +85,7 @@ function TimelineItem({
       {!isLast ? (
         <span
           aria-hidden="true"
-          className="absolute left-[18px] top-10 bottom-0 w-px bg-gradient-to-b from-accent-emerald/60 via-border to-transparent sm:left-[22px]"
+          className="absolute left-[18px] top-10 bottom-0 w-px bg-gradient-to-b from-accent-gold/60 via-border to-transparent sm:left-[22px]"
         />
       ) : null}
 
@@ -95,21 +95,19 @@ function TimelineItem({
         whileInView={{ scale: 1 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.4, delay: index * 0.08 + 0.1, type: "spring", stiffness: 200 }}
-        className="absolute left-0 top-1 flex size-9 items-center justify-center rounded-full border border-accent-emerald/40 bg-background text-accent-emerald shadow-[0_0_18px_-6px_var(--accent-emerald)] sm:size-11"
+        className="absolute left-0 top-1 flex size-9 items-center justify-center rounded-full border border-accent-gold/40 bg-background text-accent-gold shadow-[0_0_18px_-6px_var(--accent-gold)] sm:size-11"
       >
         <Icon className="size-4 sm:size-5" />
-        <span className="absolute inset-0 -z-10 rounded-full bg-accent-emerald/10 blur-[6px]" />
+        <span className="absolute inset-0 -z-10 rounded-full bg-accent-gold/10 blur-[6px]" />
       </motion.span>
 
-      <div className="group rounded-2xl border border-border/70 bg-card/60 p-5 transition-all hover:-translate-y-0.5 hover:border-accent-emerald/40 hover:shadow-[0_0_36px_-12px_var(--accent-emerald)] sm:p-6">
+      <div className="group rounded-2xl border border-border/70 bg-card/60 p-5 transition-all hover:-translate-y-0.5 hover:border-accent-gold/40 hover:shadow-[0_0_36px_-12px_var(--accent-gold)] sm:p-6">
         <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h3 className="text-base font-semibold tracking-tight sm:text-lg">
               {entry.role}
             </h3>
-            <p className="text-sm text-accent-emerald">
-              {entry.company}
-            </p>
+            <p className="text-sm text-accent-gold">{entry.company}</p>
           </div>
           <span className="inline-flex w-fit items-center rounded-full border border-border/70 bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground">
             {entry.period}
@@ -121,7 +119,7 @@ function TimelineItem({
               key={bullet}
               className="flex items-start gap-2 text-sm leading-relaxed text-muted-foreground"
             >
-              <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent-emerald" />
+              <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent-gold" />
               {bullet}
             </li>
           ))}
@@ -150,18 +148,19 @@ export function Experience() {
     >
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          eyebrow="Experience"
+          eyebrow="Journey"
           title={
             <span id="experience-heading">
-              A timeline of <span className="text-gradient-emerald">growth</span>
+              Experience &amp;{" "}
+              <span className="text-gradient-gold">internships</span>
             </span>
           }
-          description="Five years of compounding impact across startups, agencies, and internships."
+          description="Founder, DevOps, and full-stack internships — each adding a different lens to how I build."
         />
 
         <ol className="mt-12 flex flex-col gap-8">
           {ENTRIES.map((entry, idx) => (
-            <TimelineItem key={entry.company} entry={entry} index={idx} />
+            <TimelineItem key={`${entry.company}-${idx}`} entry={entry} index={idx} />
           ))}
         </ol>
       </div>

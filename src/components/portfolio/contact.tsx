@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   Mail,
-  Phone,
   MapPin,
   Github,
   Linkedin,
@@ -15,6 +14,8 @@ import {
   Send,
   Loader2,
   CheckCircle2,
+  Building2,
+  type LucideIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -27,7 +28,15 @@ import { SectionHeading } from "./section-heading";
 import { contactSchema, type ContactInput } from "@/lib/validations";
 import { cn } from "@/lib/utils";
 
-const CONTACT_INFO = [
+interface ContactRow {
+  Icon: LucideIcon;
+  label: string;
+  value: string;
+  href: string;
+  external?: boolean;
+}
+
+const CONTACT_INFO: ContactRow[] = [
   {
     Icon: Mail,
     label: "Email",
@@ -35,24 +44,26 @@ const CONTACT_INFO = [
     href: "mailto:hello@salmankhan.dev",
   },
   {
-    Icon: Phone,
-    label: "Phone",
-    value: "+91 98765 43210",
-    href: "tel:+919876543210",
-  },
-  {
     Icon: MapPin,
     label: "Location",
-    value: "Bengaluru, India",
-    href: "https://maps.google.com/?q=Bengaluru,India",
+    value: "Chennai, Tamil Nadu, India",
+    href: "https://maps.google.com/?q=Chennai,Tamil+Nadu,India",
+    external: true,
+  },
+  {
+    Icon: Building2,
+    label: "Founder & CEO",
+    value: "Yumaris Agency",
+    href: "https://yumarisagency.web.app",
+    external: true,
   },
 ];
 
-const SOCIALS = [
-  { label: "GitHub", href: "https://github.com", Icon: Github },
-  { label: "LinkedIn", href: "https://linkedin.com", Icon: Linkedin },
-  { label: "X (Twitter)", href: "https://x.com", Icon: Twitter },
-  { label: "Dribbble", href: "https://dribbble.com", Icon: Dribbble },
+const SOCIALS: { label: string; href: string; Icon: LucideIcon }[] = [
+  { label: "GitHub", href: "#", Icon: Github },
+  { label: "LinkedIn", href: "#", Icon: Linkedin },
+  { label: "X (Twitter)", href: "#", Icon: Twitter },
+  { label: "Dribbble", href: "#", Icon: Dribbble },
 ];
 
 interface FieldProps {
@@ -71,7 +82,7 @@ function Field({ id, label, error, children, required, hint }: FieldProps) {
         <Label htmlFor={id} className="text-sm font-medium">
           {label}
           {required ? (
-            <span className="ml-0.5 text-accent-emerald">*</span>
+            <span className="ml-0.5 text-accent-gold">*</span>
           ) : null}
         </Label>
         {hint ? (
@@ -111,17 +122,21 @@ export function Contact() {
       });
       const data = (await res.json()) as {
         ok: boolean;
-        errors?: Record<string, { _errors?: string[] }>;
+        errors?: Record<string, string[]>;
+        error?: string;
       };
       if (!res.ok || !data.ok) {
         if (data.errors) {
-          const firstError = Object.values(data.errors)[0]?._errors?.[0];
+          const firstField = Object.values(data.errors)[0];
+          const firstError = Array.isArray(firstField)
+            ? firstField[0]
+            : undefined;
           toast.error("Validation failed", {
             description: firstError ?? "Please check the highlighted fields.",
           });
           return;
         }
-        throw new Error("Request failed");
+        throw new Error(data.error ?? "Request failed");
       }
       toast.success("Message sent!", {
         description: "Thanks for reaching out — I'll reply within 24 hours.",
@@ -137,6 +152,12 @@ export function Contact() {
     }
   };
 
+  const handleSocial = (label: string) => {
+    toast.info("Link coming soon", {
+      description: `${label} profile will be live shortly.`,
+    });
+  };
+
   return (
     <section
       id="contact"
@@ -149,10 +170,10 @@ export function Contact() {
           title={
             <span id="contact-heading">
               Let&apos;s build something{" "}
-              <span className="text-gradient-emerald">great</span>
+              <span className="text-gradient-gold">great</span>
             </span>
           }
-          description="Have a project in mind or a role to fill? Drop me a note — I read every message."
+          description="Have a project, role, or collaboration in mind? Drop me a note — I read every message."
         />
 
         <div className="mt-12 grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
@@ -165,35 +186,38 @@ export function Contact() {
             className="flex flex-col gap-6"
           >
             <Card className="relative overflow-hidden p-6">
-              <div className="absolute -right-10 -top-10 size-40 rounded-full bg-accent-emerald/5 blur-2xl" />
+              <div className="absolute -right-10 -top-10 size-40 rounded-full bg-accent-gold/5 blur-2xl" />
               <div className="relative flex flex-col gap-5">
-                <div className="inline-flex w-fit items-center gap-2 rounded-full border border-accent-emerald/30 bg-accent-emerald/10 px-3 py-1 text-xs font-medium text-accent-emerald">
+                <div className="inline-flex w-fit items-center gap-2 rounded-full border border-accent-gold/30 bg-accent-gold/10 px-3 py-1 text-xs font-medium text-accent-gold">
                   <span className="relative flex size-2">
-                    <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent-emerald opacity-75" />
-                    <span className="relative inline-flex size-2 rounded-full bg-accent-emerald" />
+                    <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent-gold opacity-75" />
+                    <span className="relative inline-flex size-2 rounded-full bg-accent-gold" />
                   </span>
-                  Available for new projects
+                  Open to internships &amp; freelance
                 </div>
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                  Based in Bengaluru, working with clients worldwide. Typical
-                  response time is under 24 hours — feel free to reach out
-                  via the form or any channel below.
+                  Based in Chennai, working with clients and collaborators
+                  worldwide. Typical response time is under 24 hours — feel free
+                  to reach out via the form or any channel below.
                 </p>
                 <ul className="flex flex-col gap-3">
-                  {CONTACT_INFO.map(({ Icon, label, value, href }) => (
+                  {CONTACT_INFO.map(({ Icon, label, value, href, external }) => (
                     <li key={label}>
                       <a
                         href={href}
-                        className="group flex items-center gap-3 rounded-xl border border-border/70 bg-background/40 p-3 transition-all hover:-translate-y-0.5 hover:border-accent-emerald/40 hover:shadow-[0_0_24px_-8px_var(--accent-emerald)]"
+                        {...(external
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : {})}
+                        className="group flex items-center gap-3 rounded-xl border border-border/70 bg-background/40 p-3 transition-all hover:-translate-y-0.5 hover:border-accent-gold/40 hover:shadow-[0_0_24px_-8px_var(--accent-gold)]"
                       >
-                        <span className="flex size-10 items-center justify-center rounded-lg border border-accent-emerald/30 bg-accent-emerald/10 text-accent-emerald">
+                        <span className="flex size-10 items-center justify-center rounded-lg border border-accent-gold/30 bg-accent-gold/10 text-accent-gold">
                           <Icon className="size-4" />
                         </span>
                         <span className="flex flex-col">
                           <span className="text-[11px] uppercase tracking-wide text-muted-foreground">
                             {label}
                           </span>
-                          <span className="text-sm font-medium group-hover:text-accent-emerald">
+                          <span className="text-sm font-medium group-hover:text-accent-gold">
                             {value}
                           </span>
                         </span>
@@ -206,17 +230,19 @@ export function Contact() {
                     Find me online
                   </span>
                   <ul className="flex flex-wrap gap-2">
-                    {SOCIALS.map(({ label, href, Icon }) => (
+                    {SOCIALS.map(({ label, Icon }) => (
                       <li key={label}>
-                        <a
-                          href={href}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSocial(label);
+                          }}
                           aria-label={label}
-                          className="group flex size-10 items-center justify-center rounded-xl border border-border/70 bg-background/40 text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-accent-emerald/60 hover:text-accent-emerald hover:shadow-[0_0_20px_-6px_var(--accent-emerald)]"
+                          className="group flex size-10 items-center justify-center rounded-xl border border-border/70 bg-background/40 text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-accent-gold/60 hover:text-accent-gold hover:shadow-[0_0_20px_-6px_var(--accent-gold)]"
                         >
                           <Icon className="size-4" />
-                        </a>
+                        </button>
                       </li>
                     ))}
                   </ul>
@@ -233,7 +259,7 @@ export function Contact() {
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
           >
             <Card className="relative h-full overflow-hidden p-6 sm:p-8">
-              <div className="absolute -left-10 -bottom-10 size-40 rounded-full bg-accent-emerald/5 blur-2xl" />
+              <div className="absolute -left-10 -bottom-10 size-40 rounded-full bg-accent-gold/5 blur-2xl" />
               <form
                 onSubmit={handleSubmit(onSubmit)}
                 noValidate
@@ -290,7 +316,7 @@ export function Contact() {
                 >
                   <Textarea
                     id="message"
-                    placeholder="Tell me about the project, timeline, and budget…"
+                    placeholder="Tell me about the project, timeline, and goals…"
                     rows={5}
                     aria-invalid={!!errors.message}
                     className={cn(
@@ -304,7 +330,7 @@ export function Contact() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="h-11 w-full bg-accent-emerald text-accent-emerald-foreground shadow-[0_0_28px_-8px_var(--accent-emerald)] hover:bg-accent-emerald/90"
+                  className="h-11 w-full bg-accent-gold text-accent-gold-foreground shadow-[0_0_28px_-8px_var(--accent-gold)] hover:bg-accent-gold/90"
                 >
                   {isSubmitting ? (
                     <>

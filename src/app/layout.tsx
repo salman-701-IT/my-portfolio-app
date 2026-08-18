@@ -15,35 +15,37 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Salman Khan — Full-Stack Developer & Designer",
+  title: "Salman Khan S. — AI Engineer & Full-Stack Developer",
   description:
-    "Salman Khan is a full-stack developer and UI designer based in Bengaluru, India, crafting performant web apps, design systems, and cloud-native products.",
+    "Salman Khan S. is a Chennai-based IT student, AI/ML & computer-vision engineer, full-stack developer, and Founder & CEO of Yumaris Agency — building browser-first AI, web apps, and premium 3D experiences.",
   keywords: [
-    "Salman Khan",
+    "Salman Khan S.",
+    "AI Engineer",
+    "Computer Vision",
     "Full-Stack Developer",
-    "UI Engineer",
-    "Next.js",
+    "TensorFlow.js",
+    "Three.js",
     "React",
-    "TypeScript",
-    "Cloud",
+    "Chennai",
+    "Yumaris Agency",
     "Portfolio",
   ],
-  authors: [{ name: "Salman Khan" }],
+  authors: [{ name: "Salman Khan S." }],
   icons: {
     icon: "/logo.svg",
   },
   openGraph: {
-    title: "Salman Khan — Full-Stack Developer & Designer",
+    title: "Salman Khan S. — AI Engineer & Full-Stack Developer",
     description:
-      "Crafting performant web apps, design systems, and cloud-native products from Bengaluru, India.",
-    siteName: "Salman Khan Portfolio",
+      "Chennai-based AI/CV engineer and full-stack developer. Founder & CEO of Yumaris Agency. Building browser-first AI, web apps, and premium 3D experiences.",
+    siteName: "Salman Khan S. Portfolio",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Salman Khan — Full-Stack Developer & Designer",
+    title: "Salman Khan S. — AI Engineer & Full-Stack Developer",
     description:
-      "Crafting performant web apps, design systems, and cloud-native products from Bengaluru, India.",
+      "Chennai-based AI/CV engineer and full-stack developer. Founder & CEO of Yumaris Agency.",
   },
 };
 

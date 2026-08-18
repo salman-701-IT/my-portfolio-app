@@ -15,7 +15,7 @@ const NAV_LINKS = [
   { label: "Services", href: "#services" },
   { label: "Work", href: "#work" },
   { label: "Experience", href: "#experience" },
-  { label: "Testimonials", href: "#testimonials" },
+  { label: "Education", href: "#education" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -37,9 +37,9 @@ function ThemeToggle({ className }: { className?: string }) {
     >
       {mounted ? (
         isDark ? (
-          <Sun className="size-4 text-accent-emerald" />
+          <Sun className="size-4 text-accent-gold" />
         ) : (
-          <Moon className="size-4 text-accent-emerald" />
+          <Moon className="size-4 text-accent-gold" />
         )
       ) : (
         <Sun className="size-4" />
@@ -76,18 +76,18 @@ export function Navbar() {
         <Link
           href="#home"
           className="group flex items-center gap-2.5"
-          aria-label="Salman Khan — home"
+          aria-label="Salman Khan S. — home"
         >
-          <span className="relative flex size-9 items-center justify-center rounded-xl border border-accent-emerald/40 bg-accent-emerald/10 font-mono text-sm font-bold text-accent-emerald shadow-[0_0_20px_-6px_var(--accent-emerald)] transition-transform group-hover:scale-105">
+          <span className="relative flex size-9 items-center justify-center rounded-xl border border-accent-gold/40 bg-accent-gold/10 font-mono text-sm font-bold text-accent-gold shadow-[0_0_20px_-6px_var(--accent-gold)] transition-transform group-hover:scale-105">
             SK
-            <span className="absolute -right-0.5 -top-0.5 size-2 rounded-full bg-accent-emerald shadow-[0_0_8px_var(--accent-emerald)]" />
+            <span className="absolute -right-0.5 -top-0.5 size-2 rounded-full bg-accent-gold shadow-[0_0_8px_var(--accent-gold)]" />
           </span>
           <span className="hidden flex-col leading-none sm:flex">
             <span className="text-sm font-semibold tracking-tight">
-              Salman Khan
+              Salman Khan S.
             </span>
             <span className="text-[11px] text-muted-foreground">
-              Full-Stack Developer
+              AI Engineer · Full-Stack Developer
             </span>
           </span>
         </Link>
@@ -101,7 +101,7 @@ export function Navbar() {
                 className="relative rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 <span className="relative z-10">{link.label}</span>
-                <span className="absolute inset-x-3 -bottom-px h-px scale-x-0 bg-gradient-to-r from-transparent via-accent-emerald to-transparent transition-transform duration-300 hover:scale-x-100" />
+                <span className="absolute inset-x-3 -bottom-px h-px scale-x-0 bg-gradient-to-r from-transparent via-accent-gold to-transparent transition-transform duration-300 hover:scale-x-100" />
               </Link>
             </li>
           ))}
@@ -113,7 +113,7 @@ export function Navbar() {
           <Button
             asChild
             size="sm"
-            className="hidden bg-accent-emerald text-accent-emerald-foreground shadow-[0_0_24px_-8px_var(--accent-emerald)] hover:bg-accent-emerald/90 sm:inline-flex"
+            className="hidden bg-accent-gold text-accent-gold-foreground shadow-[0_0_24px_-8px_var(--accent-gold)] hover:bg-accent-gold/90 sm:inline-flex"
           >
             <Link href="#contact">
               Hire Me
@@ -139,10 +139,10 @@ export function Navbar() {
             >
               <SheetTitle className="px-1 pt-2 text-base">
                 <span className="flex items-center gap-2">
-                  <span className="flex size-7 items-center justify-center rounded-lg border border-accent-emerald/40 bg-accent-emerald/10 font-mono text-xs font-bold text-accent-emerald">
+                  <span className="flex size-7 items-center justify-center rounded-lg border border-accent-gold/40 bg-accent-gold/10 font-mono text-xs font-bold text-accent-gold">
                     SK
                   </span>
-                  Salman Khan
+                  Salman Khan S.
                 </span>
               </SheetTitle>
               <nav aria-label="Mobile" className="flex flex-col gap-1 px-2 pt-4">
@@ -151,7 +151,7 @@ export function Navbar() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent-emerald/10 hover:text-accent-emerald"
+                    className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent-gold/10 hover:text-accent-gold"
                   >
                     {link.label}
                   </Link>
@@ -160,7 +160,7 @@ export function Navbar() {
               <div className="mt-auto p-4">
                 <Button
                   asChild
-                  className="w-full bg-accent-emerald text-accent-emerald-foreground hover:bg-accent-emerald/90"
+                  className="w-full bg-accent-gold text-accent-gold-foreground hover:bg-accent-gold/90"
                 >
                   <Link href="#contact" onClick={() => setOpen(false)}>
                     Hire Me
