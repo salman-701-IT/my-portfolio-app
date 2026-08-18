@@ -27,24 +27,24 @@ export function SectionHeading({
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        "flex flex-col gap-3",
+        "flex flex-col gap-4",
         align === "center" ? "items-center text-center" : "items-start text-left",
         className,
       )}
     >
       {eyebrow ? (
-        <span className="inline-flex items-center gap-2 rounded-full border border-accent-gold/30 bg-accent-gold/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-accent-gold">
+        <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.22em] text-accent-gold">
           <span className="size-1.5 rounded-full bg-accent-gold" />
           {eyebrow}
         </span>
       ) : null}
-      <h2 className="max-w-3xl text-balance text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+      <h2 className="font-display max-w-3xl text-balance text-4xl font-bold leading-[1.1] tracking-tight-display sm:text-4xl md:text-5xl">
         {title}
       </h2>
       {description ? (
         <p
           className={cn(
-            "max-w-2xl text-balance text-sm text-muted-foreground sm:text-base",
+            "max-w-2xl text-balance text-sm leading-relaxed text-muted-foreground sm:text-base",
             align === "center" ? "mx-auto" : "",
           )}
         >

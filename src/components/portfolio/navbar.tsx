@@ -11,11 +11,13 @@ import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { label: "About", href: "#about" },
+  { label: "Journey", href: "#journey" },
   { label: "Skills", href: "#skills" },
-  { label: "Services", href: "#services" },
+  { label: "Yumaris", href: "#yumaris" },
+  { label: "AI", href: "#ai" },
   { label: "Work", href: "#work" },
-  { label: "Experience", href: "#experience" },
-  { label: "Education", href: "#education" },
+  { label: "EdTech", href: "#edtech" },
+  { label: "Leadership", href: "#leadership" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -70,7 +72,7 @@ export function Navbar() {
     >
       <nav
         aria-label="Primary"
-        className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8"
+        className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-6"
       >
         {/* Brand */}
         <Link
@@ -78,27 +80,26 @@ export function Navbar() {
           className="group flex items-center gap-2.5"
           aria-label="Salman Khan S. — home"
         >
-          <span className="relative flex size-9 items-center justify-center rounded-xl border border-accent-gold/40 bg-accent-gold/10 font-mono text-sm font-bold text-accent-gold shadow-[0_0_20px_-6px_var(--accent-gold)] transition-transform group-hover:scale-105">
+          <span className="relative flex size-9 items-center justify-center rounded-lg border border-accent-gold/40 bg-accent-gold/10 font-display text-sm font-bold text-accent-gold shadow-[0_0_20px_-6px_var(--accent-gold)] transition-transform group-hover:scale-105">
             SK
-            <span className="absolute -right-0.5 -top-0.5 size-2 rounded-full bg-accent-gold shadow-[0_0_8px_var(--accent-gold)]" />
           </span>
           <span className="hidden flex-col leading-none sm:flex">
-            <span className="text-sm font-semibold tracking-tight">
+            <span className="font-display text-base font-bold tracking-tight">
               Salman Khan S.
             </span>
-            <span className="text-[11px] text-muted-foreground">
-              AI Engineer · Full-Stack Developer
+            <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              Founder · Builder · AI Entrepreneur
             </span>
           </span>
         </Link>
 
         {/* Desktop links */}
-        <ul className="hidden items-center gap-1 lg:flex">
+        <ul className="hidden items-center gap-0.5 xl:flex">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="relative rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="relative rounded-md px-3 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 <span className="relative z-10">{link.label}</span>
                 <span className="absolute inset-x-3 -bottom-px h-px scale-x-0 bg-gradient-to-r from-transparent via-accent-gold to-transparent transition-transform duration-300 hover:scale-x-100" />
@@ -113,10 +114,10 @@ export function Navbar() {
           <Button
             asChild
             size="sm"
-            className="hidden bg-accent-gold text-accent-gold-foreground shadow-[0_0_24px_-8px_var(--accent-gold)] hover:bg-accent-gold/90 sm:inline-flex"
+            className="hidden bg-accent-gold text-accent-gold-foreground shadow-[0_0_24px_-8px_var(--accent-gold)] hover:bg-accent-gold/90 md:inline-flex"
           >
             <Link href="#contact">
-              Hire Me
+              Let&apos;s Talk
               <ArrowUpRight className="size-3.5" />
             </Link>
           </Button>
@@ -127,7 +128,7 @@ export function Navbar() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="lg:hidden"
+                className="xl:hidden"
                 aria-label="Open navigation menu"
               >
                 <Menu className="size-5" />
@@ -139,10 +140,10 @@ export function Navbar() {
             >
               <SheetTitle className="px-1 pt-2 text-base">
                 <span className="flex items-center gap-2">
-                  <span className="flex size-7 items-center justify-center rounded-lg border border-accent-gold/40 bg-accent-gold/10 font-mono text-xs font-bold text-accent-gold">
+                  <span className="flex size-7 items-center justify-center rounded-lg border border-accent-gold/40 bg-accent-gold/10 font-display text-xs font-bold text-accent-gold">
                     SK
                   </span>
-                  Salman Khan S.
+                  <span className="font-display">Salman Khan S.</span>
                 </span>
               </SheetTitle>
               <nav aria-label="Mobile" className="flex flex-col gap-1 px-2 pt-4">
@@ -163,7 +164,7 @@ export function Navbar() {
                   className="w-full bg-accent-gold text-accent-gold-foreground hover:bg-accent-gold/90"
                 >
                   <Link href="#contact" onClick={() => setOpen(false)}>
-                    Hire Me
+                    Let&apos;s Talk
                     <ArrowUpRight className="size-4" />
                   </Link>
                 </Button>

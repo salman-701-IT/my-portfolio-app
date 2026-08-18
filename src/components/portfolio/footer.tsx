@@ -23,9 +23,13 @@ import { newsletterSchema, type NewsletterInput } from "@/lib/validations";
 
 const NAV_LINKS = [
   { label: "About", href: "#about" },
+  { label: "Journey", href: "#journey" },
   { label: "Skills", href: "#skills" },
+  { label: "Yumaris", href: "#yumaris" },
+  { label: "AI", href: "#ai" },
   { label: "Work", href: "#work" },
-  { label: "Experience", href: "#experience" },
+  { label: "EdTech", href: "#edtech" },
+  { label: "Leadership", href: "#leadership" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -66,7 +70,7 @@ function NewsletterForm() {
         throw new Error(data.error ?? "Request failed");
       }
       toast.success("Subscribed!", {
-        description: "You'll get occasional notes on building, design, and code.",
+        description: "You'll get occasional notes on building, AI, and design.",
       });
       reset();
     } catch {
@@ -128,8 +132,8 @@ export function Footer() {
 
   return (
     <footer className="mt-auto border-t border-border/70 bg-background/60">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+      <div className="mx-auto max-w-6xl px-6 py-12">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr]">
           {/* Brand + socials */}
           <div className="flex flex-col gap-4">
             <Link
@@ -137,20 +141,21 @@ export function Footer() {
               className="flex w-fit items-center gap-2.5"
               aria-label="Salman Khan S. — home"
             >
-              <span className="flex size-9 items-center justify-center rounded-xl border border-accent-gold/40 bg-accent-gold/10 font-mono text-sm font-bold text-accent-gold shadow-[0_0_20px_-6px_var(--accent-gold)]">
+              <span className="font-display flex size-9 items-center justify-center rounded-lg border border-accent-gold/40 bg-accent-gold/10 text-sm font-bold text-accent-gold shadow-[0_0_20px_-6px_var(--accent-gold)]">
                 SK
               </span>
               <span className="flex flex-col leading-none">
-                <span className="text-sm font-semibold">Salman Khan S.</span>
-                <span className="text-[11px] text-muted-foreground">
-                  AI Engineer · Founder
+                <span className="font-display text-base font-bold tracking-tight">
+                  Salman Khan S.
+                </span>
+                <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                  Founder · Builder · AI Entrepreneur
                 </span>
               </span>
             </Link>
             <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
-              AI engineer &amp; founder building premium, practical tech —
-              browser-first AI/CV, full-stack web, and 3D interactive
-              experiences.
+              Founder &amp; CEO, Yumaris Agency · Building the future with AI,
+              software, education &amp; innovation.
             </p>
             <ul className="flex flex-wrap gap-2">
               {SOCIALS.map(({ label, Icon }) => (
@@ -176,7 +181,7 @@ export function Footer() {
             <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               Navigate
             </h3>
-            <ul className="flex flex-col gap-2">
+            <ul className="grid grid-cols-2 gap-2">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link
@@ -206,7 +211,7 @@ export function Footer() {
                 <ExternalLink className="size-3.5" />
               </a>
               <p className="text-xs text-muted-foreground">
-                Online Learning · Web Design · Branding
+                AI + Software + EdTech + Automation + Innovation
               </p>
             </div>
           </div>
@@ -217,7 +222,7 @@ export function Footer() {
               Newsletter
             </h3>
             <p className="text-sm text-muted-foreground">
-              Occasional notes on building, design, and code. No spam,
+              Occasional notes on building, AI, and design. No spam,
               unsubscribe anytime.
             </p>
             <NewsletterForm />
@@ -226,7 +231,8 @@ export function Footer() {
 
         <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-border/70 pt-6 sm:flex-row">
           <p className="text-center text-xs text-muted-foreground sm:text-left">
-            © 2025 Salman Khan S. · Crafted with care in Chennai.
+            © 2025 Salman Khan S. · Building the future with AI, software,
+            education &amp; innovation.
           </p>
           <Button
             variant="ghost"

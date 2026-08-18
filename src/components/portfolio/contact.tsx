@@ -59,6 +59,14 @@ const CONTACT_INFO: ContactRow[] = [
   },
 ];
 
+const COLLAB_AREAS = [
+  "AI Products",
+  "Software Development",
+  "EdTech",
+  "Business Automation",
+  "Technology Consulting",
+];
+
 const SOCIALS: { label: string; href: string; Icon: LucideIcon }[] = [
   { label: "GitHub", href: "#", Icon: Github },
   { label: "LinkedIn", href: "#", Icon: Linkedin },
@@ -139,7 +147,7 @@ export function Contact() {
         throw new Error(data.error ?? "Request failed");
       }
       toast.success("Message sent!", {
-        description: "Thanks for reaching out — I'll reply within 24 hours.",
+        description: "I'll reply within 24 hours.",
         icon: <CheckCircle2 className="size-4" />,
       });
       setSubmitted(true);
@@ -162,21 +170,22 @@ export function Contact() {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="scroll-mt-24 bg-muted/30 py-20 sm:py-28"
+      className="scroll-mt-24 bg-muted/30 py-24 md:py-32"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-6">
         <SectionHeading
+          align="left"
           eyebrow="Contact"
           title={
             <span id="contact-heading">
-              Let&apos;s build something{" "}
-              <span className="text-gradient-gold">great</span>
+              Let&apos;s build the{" "}
+              <span className="text-gradient-gold">future.</span>
             </span>
           }
-          description="Have a project, role, or collaboration in mind? Drop me a note — I read every message."
+          description="Open to connecting with businesses, startups, educational institutions, students, developers, and technology partners."
         />
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
+        <div className="mt-14 grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
           {/* Left — info */}
           <motion.div
             initial={reduce ? false : { opacity: 0, y: 24 }}
@@ -193,7 +202,7 @@ export function Contact() {
                     <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent-gold opacity-75" />
                     <span className="relative inline-flex size-2 rounded-full bg-accent-gold" />
                   </span>
-                  Open to internships &amp; freelance
+                  Available for collaborations
                 </div>
                 <p className="text-sm leading-relaxed text-muted-foreground">
                   Based in Chennai, working with clients and collaborators
@@ -225,6 +234,24 @@ export function Contact() {
                     </li>
                   ))}
                 </ul>
+
+                {/* Collaboration areas */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                    Collaboration Areas
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {COLLAB_AREAS.map((area) => (
+                      <span
+                        key={area}
+                        className="rounded-full border border-border/70 bg-background/40 px-2.5 py-0.5 text-[11px] font-medium text-foreground/80"
+                      >
+                        {area}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="flex flex-col gap-2">
                   <span className="text-[11px] uppercase tracking-wide text-muted-foreground">
                     Find me online

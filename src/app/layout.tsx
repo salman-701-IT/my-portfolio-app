@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Libre_Baskerville, Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
@@ -14,20 +14,35 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const libreBaskerville = Libre_Baskerville({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+});
+
+const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Salman Khan S. — AI Engineer & Full-Stack Developer",
+  title: "Salman Khan S. — Founder. Builder. AI Entrepreneur.",
   description:
-    "Salman Khan S. is a Chennai-based IT student, AI/ML & computer-vision engineer, full-stack developer, and Founder & CEO of Yumaris Agency — building browser-first AI, web apps, and premium 3D experiences.",
+    "Salman Khan S. — Founder & CEO of Yumaris Agency. Building AI-powered products, software systems, EdTech platforms, and business automation. Problem first. Technology second. Impact always.",
   keywords: [
     "Salman Khan S.",
-    "AI Engineer",
-    "Computer Vision",
-    "Full-Stack Developer",
-    "TensorFlow.js",
-    "Three.js",
-    "React",
-    "Chennai",
+    "Founder",
+    "AI Entrepreneur",
     "Yumaris Agency",
+    "AI Agents",
+    "RAG",
+    "EdTech",
+    "Business Automation",
+    "Software Development",
+    "Chennai",
     "Portfolio",
   ],
   authors: [{ name: "Salman Khan S." }],
@@ -35,17 +50,17 @@ export const metadata: Metadata = {
     icon: "/logo.svg",
   },
   openGraph: {
-    title: "Salman Khan S. — AI Engineer & Full-Stack Developer",
+    title: "Salman Khan S. — Founder. Builder. AI Entrepreneur.",
     description:
-      "Chennai-based AI/CV engineer and full-stack developer. Founder & CEO of Yumaris Agency. Building browser-first AI, web apps, and premium 3D experiences.",
+      "Founder & CEO of Yumaris Agency. Building AI-powered products, software systems, EdTech platforms, and business automation that transform real-world problems into scalable technology.",
     siteName: "Salman Khan S. Portfolio",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Salman Khan S. — AI Engineer & Full-Stack Developer",
+    title: "Salman Khan S. — Founder. Builder. AI Entrepreneur.",
     description:
-      "Chennai-based AI/CV engineer and full-stack developer. Founder & CEO of Yumaris Agency.",
+      "Founder & CEO of Yumaris Agency. Building AI, software, EdTech, and automation.",
   },
 };
 
@@ -57,7 +72,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+        className={`${geistSans.variable} ${geistMono.variable} ${libreBaskerville.variable} ${poppins.variable} antialiased bg-background text-foreground`}
       >
         <ThemeProvider
           attribute="class"

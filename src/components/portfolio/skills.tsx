@@ -6,11 +6,9 @@ import {
   Code2,
   Layers,
   Server,
-  BrainCircuit,
   Database,
-  Cloud,
-  Wrench,
-  Sparkles,
+  BrainCircuit,
+  Briefcase,
   type LucideIcon,
 } from "lucide-react";
 
@@ -20,84 +18,63 @@ import { SectionHeading } from "./section-heading";
 interface SkillCategory {
   Icon: LucideIcon;
   title: string;
-  blurb: string;
   skills: string[];
 }
 
 const CATEGORIES: SkillCategory[] = [
   {
     Icon: Code2,
-    title: "Programming",
-    blurb: "Core languages I think and ship in.",
-    skills: ["C", "C++", "Python", "Java", "JavaScript", "Dart"],
+    title: "Languages",
+    skills: ["Java", "Python", "JavaScript", "HTML", "CSS"],
   },
   {
     Icon: Layers,
     title: "Frontend",
-    blurb: "Interfaces that feel instant and look sharp.",
-    skills: ["HTML", "CSS", "JavaScript", "React", "Tailwind CSS", "Vite"],
+    skills: ["React", "Next.js", "Tailwind CSS", "Three.js"],
   },
   {
     Icon: Server,
     title: "Backend",
-    blurb: "Typed APIs and services that scale.",
-    skills: ["Node.js", "Express.js", "Django", "FastAPI"],
-  },
-  {
-    Icon: BrainCircuit,
-    title: "AI / ML",
-    blurb: "Browser-first AI & computer vision.",
-    skills: [
-      "TensorFlow",
-      "TensorFlow.js",
-      "ONNX",
-      "BlazeFace",
-      "Computer Vision",
-      "Face & Liveness Detection",
-      "AI Camera Systems",
-    ],
+    skills: ["Java", "Spring Boot", "Node.js", "REST APIs"],
   },
   {
     Icon: Database,
-    title: "Databases",
-    blurb: "Modeling, querying, and storage.",
-    skills: ["Firebase", "Supabase", "MongoDB", "PostgreSQL", "MySQL", "DynamoDB"],
+    title: "Database & Cloud",
+    skills: ["Firebase", "Firestore", "Cloud Services", "API Integrations"],
   },
   {
-    Icon: Cloud,
-    title: "Cloud / DevOps",
-    blurb: "From commit to production, safely.",
-    skills: ["AWS", "Docker", "Kubernetes", "Nginx", "Apache", "CI/CD", "XAMPP"],
-  },
-  {
-    Icon: Wrench,
-    title: "Development Tools",
-    blurb: "Daily drivers for building and shipping.",
-    skills: ["VS Code", "GitHub", "Postman", "Replit"],
-  },
-  {
-    Icon: Sparkles,
-    title: "Creative / UI",
-    blurb: "Motion, 3D, and interactive web.",
+    Icon: BrainCircuit,
+    title: "Artificial Intelligence",
     skills: [
-      "Three.js",
-      "Framer Motion",
-      "Lottie",
-      "3D UI",
-      "Glassmorphism",
-      "Animation",
-      "Interactive Web",
+      "Generative AI",
+      "LLMs",
+      "RAG",
+      "AI Agents",
+      "Prompt Engineering",
+      "Machine Learning",
+      "Data Science",
+    ],
+  },
+  {
+    Icon: Briefcase,
+    title: "Business Technology",
+    skills: [
+      "CRM",
+      "HRMS",
+      "ERP Concepts",
+      "Workflow Automation",
+      "Digital Transformation",
     ],
   },
 ];
 
 const PROFICIENCIES: { name: string; level: number }[] = [
-  { name: "JavaScript", level: 90 },
-  { name: "React", level: 88 },
-  { name: "Python", level: 86 },
-  { name: "Node.js", level: 84 },
-  { name: "TensorFlow.js", level: 82 },
-  { name: "Three.js / 3D UI", level: 78 },
+  { name: "Java", level: 88 },
+  { name: "React", level: 90 },
+  { name: "Next.js", level: 87 },
+  { name: "Spring Boot", level: 82 },
+  { name: "AI / RAG", level: 85 },
+  { name: "Three.js", level: 78 },
 ];
 
 function ProficiencyBar({
@@ -114,7 +91,7 @@ function ProficiencyBar({
     <div className="flex flex-col gap-1.5">
       <div className="flex items-center justify-between text-sm">
         <span className="font-medium">{name}</span>
-        <span className="text-xs font-mono text-accent-gold">{level}%</span>
+        <span className="font-mono text-xs text-accent-gold">{level}%</span>
       </div>
       <div className="relative h-2 overflow-hidden rounded-full bg-muted">
         <motion.div
@@ -137,22 +114,23 @@ export function Skills() {
     <section
       id="skills"
       aria-labelledby="skills-heading"
-      className="scroll-mt-24 py-20 sm:py-28"
+      className="scroll-mt-24 py-24 md:py-32"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-6">
         <SectionHeading
+          align="left"
           eyebrow="Toolkit"
           title={
             <span id="skills-heading">
               The stack behind the{" "}
-              <span className="text-gradient-gold">work</span>
+              <span className="text-gradient-gold">products.</span>
             </span>
           }
-          description="A pragmatic stack picked for speed, browser-first AI, and premium visuals — not hype."
+          description="A pragmatic stack spanning languages, frontend, backend, cloud, AI, and business technology — chosen to ship real products, not chase hype."
         />
 
         {/* Category grid */}
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {CATEGORIES.map((cat, idx) => {
             return (
               <motion.div
@@ -173,12 +151,9 @@ export function Skills() {
                       <span className="flex size-11 items-center justify-center rounded-xl border border-accent-gold/30 bg-accent-gold/10 text-accent-gold">
                         <cat.Icon className="size-5" />
                       </span>
-                      <div className="flex flex-col">
-                        <h3 className="text-base font-semibold">{cat.title}</h3>
-                        <p className="text-xs text-muted-foreground">
-                          {cat.blurb}
-                        </p>
-                      </div>
+                      <h3 className="font-display text-base font-semibold tracking-tight">
+                        {cat.title}
+                      </h3>
                     </div>
                     <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto pr-1">
                       {cat.skills.map((skill) => (
@@ -201,10 +176,12 @@ export function Skills() {
             <div className="absolute -left-10 -top-10 size-40 rounded-full bg-accent-gold/5 blur-2xl" />
             <div className="relative grid gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
               <div className="sm:col-span-2 lg:col-span-1">
-                <h3 className="text-base font-semibold">Core proficiency</h3>
-                <p className="mt-1 text-xs text-muted-foreground">
+                <h3 className="font-display text-base font-semibold tracking-tight">
+                  Core proficiency
+                </h3>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                   Self-rated against what I&apos;d confidently ship today —
-                  browser-first, no PyTorch.
+                  across AI, full-stack, and creative engineering.
                 </p>
               </div>
               <div className="grid gap-5 sm:col-span-2 sm:grid-cols-2 lg:grid-cols-3">
