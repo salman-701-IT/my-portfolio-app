@@ -18,6 +18,14 @@ import {
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "./section-heading";
+import { TiltCard } from "./tilt-card";
+import {
+  fadeLeft,
+  fadeRight,
+  staggerContainer,
+  staggerItem,
+  withReducedMotion,
+} from "./motion-variants";
 
 interface ServiceItem {
   Icon: LucideIcon;
@@ -69,6 +77,11 @@ const SERVES = [
 
 export function Yumaris() {
   const reduce = useReducedMotion();
+  const serviceContainer = withReducedMotion(
+    staggerContainer({ staggerChildren: 0.07, delayChildren: 0.05 }),
+    reduce,
+  );
+  const serviceItem = withReducedMotion(staggerItem({ duration: 0.5 }), reduce);
   return (
     <section
       id="yumaris"
@@ -94,10 +107,10 @@ export function Yumaris() {
         <div className="mt-14 grid gap-6 lg:grid-cols-[1fr_1fr]">
           {/* Left: wordmark card */}
           <motion.div
-            initial={reduce ? false : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={withReducedMotion(fadeRight(), reduce)}
+            initial={reduce ? false : "hidden"}
+            whileInView="show"
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           >
             <Card className="relative h-full overflow-hidden p-8 sm:p-10">
               <div className="absolute -right-12 -top-12 size-44 rounded-full bg-accent-gold/10 blur-3xl" />
@@ -141,10 +154,10 @@ export function Yumaris() {
 
           {/* Right: Vision + Mission cards */}
           <motion.div
-            initial={reduce ? false : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={withReducedMotion(fadeLeft(), reduce)}
+            initial={reduce ? false : "hidden"}
+            whileInView="show"
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
             className="grid gap-4"
           >
             <Card className="relative overflow-hidden p-6">
@@ -191,46 +204,44 @@ export function Yumaris() {
           <h3 className="font-display text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
             Service Ecosystem
           </h3>
-          <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {SERVICES.map((service, idx) => (
-              <motion.div
-                key={service.title}
-                initial={reduce ? false : { opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{
-                  duration: 0.5,
-                  ease: [0.22, 1, 0.36, 1],
-                  delay: idx * 0.05,
-                }}
-              >
-                <Card className="group relative h-full overflow-hidden p-5 transition-all hover:-translate-y-1 hover:border-accent-gold/50 hover:shadow-[0_0_36px_-12px_var(--accent-gold)]">
-                  <div className="absolute -right-8 -top-8 size-24 rounded-full bg-accent-gold/5 transition-transform duration-500 group-hover:scale-[1.8]" />
-                  <div className="relative flex items-start gap-3">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-accent-gold/30 bg-accent-gold/10 text-accent-gold transition-all group-hover:scale-110">
-                      <service.Icon className="size-5" />
-                    </span>
-                    <div className="flex flex-col gap-1">
-                      <h4 className="font-display text-sm font-semibold leading-tight tracking-tight">
-                        {service.title}
-                      </h4>
-                      <p className="text-xs leading-relaxed text-muted-foreground">
-                        {service.description}
-                      </p>
+          <motion.div
+            variants={serviceContainer}
+            initial={reduce ? false : "hidden"}
+            whileInView="show"
+            viewport={{ once: true, margin: "-60px" }}
+            className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            {SERVICES.map((service) => (
+              <motion.div key={service.title} variants={serviceItem}>
+                <TiltCard className="h-full">
+                  <Card className="group relative h-full overflow-hidden p-5 transition-all hover:-translate-y-1 hover:border-accent-gold/50 hover:shadow-[0_0_36px_-12px_var(--accent-gold)]">
+                    <div className="absolute -right-8 -top-8 size-24 rounded-full bg-accent-gold/5 transition-transform duration-500 group-hover:scale-[1.8]" />
+                    <div className="relative flex items-start gap-3">
+                      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-accent-gold/30 bg-accent-gold/10 text-accent-gold transition-all group-hover:scale-110">
+                        <service.Icon className="size-5" />
+                      </span>
+                      <div className="flex flex-col gap-1">
+                        <h4 className="font-display text-sm font-semibold leading-tight tracking-tight">
+                          {service.title}
+                        </h4>
+                        <p className="text-xs leading-relaxed text-muted-foreground">
+                          {service.description}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </Card>
+                  </Card>
+                </TiltCard>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         {/* Who we serve */}
         <motion.div
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={withReducedMotion(staggerItem({ duration: 0.55 }), reduce)}
+          initial={reduce ? false : "hidden"}
+          whileInView="show"
           viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.55 }}
           className="mt-12 flex flex-col items-center gap-4 rounded-2xl border border-border/70 bg-card/40 p-6 text-center"
         >
           <h3 className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">

@@ -15,6 +15,11 @@ import {
 
 import { Card } from "@/components/ui/card";
 import { SectionHeading } from "./section-heading";
+import {
+  staggerContainer,
+  staggerItem,
+  withReducedMotion,
+} from "./motion-variants";
 
 const METHODOLOGY_STEPS = [
   "Problem Discovery",
@@ -74,6 +79,19 @@ const PILLARS: { Icon: LucideIcon; title: string; body: string }[] = [
 
 export function Leadership() {
   const reduce = useReducedMotion();
+  const pillarContainer = withReducedMotion(
+    staggerContainer({ staggerChildren: 0.08, delayChildren: 0.05 }),
+    reduce,
+  );
+  const methodItem = withReducedMotion(
+    staggerItem({ duration: 0.4 }),
+    reduce,
+  );
+  const philosophyItem = withReducedMotion(
+    staggerItem({ duration: 0.5 }),
+    reduce,
+  );
+  const pillarItem = withReducedMotion(staggerItem({ duration: 0.5 }), reduce);
   return (
     <section
       id="leadership"
@@ -96,10 +114,10 @@ export function Leadership() {
         <div className="mt-14 grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
           {/* LEFT: Methodology */}
           <motion.div
-            initial={reduce ? false : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={withReducedMotion(staggerItem({ duration: 0.6 }), reduce)}
+            initial={reduce ? false : "hidden"}
+            whileInView="show"
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
             <Card className="relative h-full overflow-hidden p-6 sm:p-8">
               <div className="absolute -right-12 -top-12 size-44 rounded-full bg-accent-gold/5 blur-2xl" />
@@ -117,21 +135,14 @@ export function Leadership() {
                   phase has clear inputs, outputs, and ownership.
                 </p>
                 <ol className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  {METHODOLOGY_STEPS.map((step, idx) => (
+                  {METHODOLOGY_STEPS.map((step) => (
                     <motion.li
                       key={step}
-                      initial={reduce ? false : { opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, margin: "-40px" }}
-                      transition={{
-                        duration: 0.4,
-                        ease: [0.22, 1, 0.36, 1],
-                        delay: idx * 0.04,
-                      }}
+                      variants={methodItem}
                       className="flex items-center gap-3 rounded-lg border border-border/70 bg-background/40 px-3 py-2.5 transition-colors hover:border-accent-gold/40 hover:bg-accent-gold/5"
                     >
                       <span className="font-display flex size-7 shrink-0 items-center justify-center rounded-md border border-accent-gold/40 bg-accent-gold/10 text-xs font-bold text-accent-gold">
-                        {String(idx + 1).padStart(2, "0")}
+                        {String(METHODOLOGY_STEPS.indexOf(step) + 1).padStart(2, "0")}
                       </span>
                       <span className="text-sm font-medium">{step}</span>
                     </motion.li>
@@ -143,10 +154,13 @@ export function Leadership() {
 
           {/* RIGHT: Philosophy cards */}
           <motion.div
-            initial={reduce ? false : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={withReducedMotion(
+              staggerContainer({ staggerChildren: 0.1, delayChildren: 0.1 }),
+              reduce,
+            )}
+            initial={reduce ? false : "hidden"}
+            whileInView="show"
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
             className="flex flex-col gap-4"
           >
             <div className="flex items-center gap-2.5">
@@ -157,18 +171,8 @@ export function Leadership() {
                 Operating Philosophies
               </h3>
             </div>
-            {PHILOSOPHY.map((p, idx) => (
-              <motion.div
-                key={p.title}
-                initial={reduce ? false : { opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{
-                  duration: 0.5,
-                  ease: [0.22, 1, 0.36, 1],
-                  delay: 0.1 + idx * 0.07,
-                }}
-              >
+            {PHILOSOPHY.map((p) => (
+              <motion.div key={p.title} variants={philosophyItem}>
                 <Card className="group relative overflow-hidden p-5 transition-all hover:-translate-y-0.5 hover:border-accent-gold/40">
                   <div className="absolute -right-6 -top-6 size-20 rounded-full bg-accent-gold/5 transition-transform duration-500 group-hover:scale-[1.6]" />
                   <div className="relative flex flex-col gap-2">
@@ -187,10 +191,10 @@ export function Leadership() {
 
         {/* Personal brand pillars */}
         <motion.div
-          initial={reduce ? false : { opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={withReducedMotion(staggerItem({ duration: 0.6 }), reduce)}
+          initial={reduce ? false : "hidden"}
+          whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="mt-10"
         >
           <div className="flex items-center gap-2.5">
@@ -201,19 +205,15 @@ export function Leadership() {
               Personal Brand Pillars
             </h3>
           </div>
-          <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {PILLARS.map((pillar, idx) => (
-              <motion.div
-                key={pillar.title}
-                initial={reduce ? false : { opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{
-                  duration: 0.5,
-                  ease: [0.22, 1, 0.36, 1],
-                  delay: idx * 0.06,
-                }}
-              >
+          <motion.div
+            variants={pillarContainer}
+            initial={reduce ? false : "hidden"}
+            whileInView="show"
+            viewport={{ once: true, margin: "-60px" }}
+            className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+          >
+            {PILLARS.map((pillar) => (
+              <motion.div key={pillar.title} variants={pillarItem}>
                 <Card className="group relative h-full overflow-hidden p-5 transition-all hover:-translate-y-1 hover:border-accent-gold/50 hover:shadow-[0_0_36px_-12px_var(--accent-gold)]">
                   <div className="absolute -right-8 -top-8 size-24 rounded-full bg-accent-gold/5 transition-transform duration-500 group-hover:scale-[1.8]" />
                   <div className="relative flex flex-col gap-3">
@@ -230,7 +230,7 @@ export function Leadership() {
                 </Card>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

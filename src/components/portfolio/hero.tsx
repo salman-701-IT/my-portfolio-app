@@ -3,7 +3,13 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type Variants,
+} from "framer-motion";
 import {
   Github,
   Linkedin,
@@ -15,7 +21,12 @@ import {
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { MagneticButton } from "./magnetic-button";
 import { useCountUp } from "./use-count-up";
+import {
+  staggerContainer,
+  withReducedMotion,
+} from "./motion-variants";
 
 const SOCIALS: { label: string; href: string; Icon: LucideIcon }[] = [
   { label: "GitHub", href: "#", Icon: Github },
@@ -31,6 +42,26 @@ const STATS = [
   { value: 10, suffix: "+", label: "Team Members Led" },
 ];
 
+// Per-word fade+blur reveal variant for the H1.
+const wordVariants: Variants = {
+  hidden: { opacity: 0, y: 12, filter: "blur(8px)" },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const socialItem: Variants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  show: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 function StatItem({
   value,
   suffix,
@@ -40,16 +71,22 @@ function StatItem({
   suffix: string;
   label: string;
 }) {
-  const { ref, formatted } = useCountUp({ value, duration: 1.8 });
+  const { ref, formatted, isDone } = useCountUp({ value, duration: 1.8 });
   return (
     <div className="flex flex-col items-center text-center sm:items-start sm:text-left">
       <div className="flex items-baseline gap-0.5">
-        <span
+        <motion.span
           ref={ref}
-          className="font-display text-3xl font-bold tracking-tight-display sm:text-4xl"
+          animate={
+            isDone
+              ? { scale: [1, 1.15, 1] }
+              : { scale: 1 }
+          }
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className={cnHeroNumber(isDone)}
         >
           {formatted}
-        </span>
+        </motion.span>
         <span className="font-display text-xl font-bold text-accent-gold sm:text-2xl">
           {suffix}
         </span>
@@ -59,17 +96,88 @@ function StatItem({
   );
 }
 
+// Tailwind class helper to apply gold flash when count completes.
+function cnHeroNumber(done: boolean): string {
+  const base =
+    "font-display text-3xl font-bold tracking-tight-display sm:text-4xl transition-colors duration-300";
+  return done ? `${base} text-accent-gold` : `${base} text-foreground`;
+}
+
 export function Hero() {
   const reduce = useReducedMotion();
+  const sectionRef = React.useRef<HTMLElement | null>(null);
+
+  // Parallax: track hero scroll progress (top-of-hero at top of viewport →
+  // bottom-of-hero at top of viewport).
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const bgOpacity = useTransform(scrollYProgress, [0, 1], [1, 0.3]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
+
+  const container = withReducedMotion(
+    staggerContainer({ staggerChildren: 0.1, delayChildren: 0.05 }),
+    reduce,
+  );
+  const statsContainer = withReducedMotion(
+    staggerContainer({ staggerChildren: 0.08, delayChildren: 0.4 }),
+    reduce,
+  );
+  const socialsContainer = withReducedMotion(
+    staggerContainer({ staggerChildren: 0.06, delayChildren: 0.45 }),
+    reduce,
+  );
+
+  const eyebrowV: Variants = {
+    hidden: { opacity: 0, y: -12 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+    },
+  };
+  const subheadV: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+    },
+  };
+  const quoteV: Variants = {
+    hidden: { opacity: 0, y: 16 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.05 },
+    },
+  };
+  const ctaV: Variants = {
+    hidden: { opacity: 0, y: 16 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+    },
+  };
+
+  // Split the H1 into words so we can do per-word reveal.
+  const h1Words = ["Founder.", "Builder.", "AI Entrepreneur."];
+
   return (
     <section
       id="home"
+      ref={sectionRef}
       aria-label="Introduction"
       className="relative scroll-mt-24 overflow-hidden"
     >
-      {/* Background image + blobs + grid */}
-      <div
+      {/* Background image + blobs + grid (parallax layer) */}
+      <motion.div
         aria-hidden="true"
+        style={reduce ? undefined : { y: bgY, opacity: bgOpacity }}
         className="pointer-events-none absolute inset-0 -z-10"
       >
         <Image
@@ -83,71 +191,114 @@ export function Hero() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/70 to-background" />
         <div className="absolute inset-0 bg-grid mask-fade-b opacity-40" />
-        <div className="absolute -left-32 top-10 size-[28rem] rounded-full bg-accent-gold/15 blur-[140px]" />
-        <div className="absolute right-0 top-40 size-[24rem] rounded-full bg-accent-blue/10 blur-[140px]" />
-        <div className="absolute bottom-0 left-1/3 size-[20rem] rounded-full bg-accent-gold/8 blur-[120px]" />
-      </div>
+        <div className="absolute -left-32 top-10 size-[28rem] rounded-full bg-accent-gold/15 blur-[140px] animate-float-bob" />
+        <div className="absolute right-0 top-40 size-[24rem] rounded-full bg-accent-blue/10 blur-[140px] animate-float-bob-slow" />
+        <div className="absolute bottom-0 left-1/3 size-[20rem] rounded-full bg-accent-gold/8 blur-[120px] animate-float-bob" />
+      </motion.div>
 
-      <div className="mx-auto flex max-w-6xl flex-col items-start gap-10 px-6 py-24 md:py-32">
+      <motion.div
+        style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
+        className="mx-auto flex max-w-6xl flex-col items-start gap-10 px-6 py-24 md:py-32"
+      >
         <motion.div
-          initial={reduce ? false : { opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          variants={container}
+          initial={reduce ? false : "hidden"}
+          animate="show"
           className="flex flex-col items-start gap-7"
         >
           {/* Eyebrow */}
-          <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.22em] text-accent-gold">
+          <motion.span
+            variants={withReducedMotion(eyebrowV, reduce)}
+            className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.22em] text-accent-gold"
+          >
             <span className="size-1.5 rounded-full bg-accent-gold" />
             Founder &amp; CEO — Yumaris Agency
-          </span>
+          </motion.span>
 
-          {/* H1 */}
+          {/* H1 with per-word blur+clip reveal */}
           <h1 className="font-display text-balance text-5xl font-bold leading-[1.05] tracking-tight-display sm:text-6xl md:text-7xl lg:text-8xl">
-            Founder. Builder.{" "}
-            <span className="text-gradient-gold">AI Entrepreneur.</span>
+            <span className="sr-only">Founder. Builder. AI Entrepreneur.</span>
+            <motion.span
+              variants={container}
+              initial={reduce ? false : "hidden"}
+              animate="show"
+              aria-hidden="true"
+              className="flex flex-wrap gap-x-4 gap-y-1"
+            >
+              {h1Words.map((word, idx) => (
+                <motion.span
+                  key={word}
+                  variants={withReducedMotion(wordVariants, reduce)}
+                  transition={{ delay: idx * 0.08 }}
+                  className={
+                    idx === h1Words.length - 1 ? "text-gradient-gold" : ""
+                  }
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </motion.span>
           </h1>
 
           {/* Subhead */}
-          <p className="max-w-2xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg">
+          <motion.p
+            variants={withReducedMotion(subheadV, reduce)}
+            className="max-w-2xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg"
+          >
             I build AI-powered products, software systems, educational
             platforms, and digital solutions that transform real-world problems
             into scalable technology.
-          </p>
+          </motion.p>
 
           {/* Brand statement pull-quote */}
-          <blockquote className="max-w-2xl border-l-2 border-accent-gold pl-5">
+          <motion.blockquote
+            variants={withReducedMotion(quoteV, reduce)}
+            className="max-w-2xl border-l-2 border-accent-gold pl-5"
+          >
             <p className="font-display text-balance text-lg italic text-foreground/90 sm:text-xl">
               I don&apos;t just learn technology.{" "}
               <span className="text-accent-gold">I build with it.</span>
             </p>
-          </blockquote>
+          </motion.blockquote>
 
-          {/* CTAs */}
-          <div className="flex flex-wrap items-center gap-3">
-            <Button
-              asChild
-              size="lg"
-              className="bg-accent-gold text-accent-gold-foreground shadow-[0_0_28px_-8px_var(--accent-gold)] hover:bg-accent-gold/90"
-            >
-              <Link href="#work">
-                Explore My Work
-                <ArrowUpRight className="size-4" />
-              </Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="border-accent-gold/40 text-foreground hover:bg-accent-gold/10 hover:text-accent-gold"
-            >
-              <Link href="#contact">Let&apos;s Build Something</Link>
-            </Button>
-          </div>
+          {/* CTAs — magnetic */}
+          <motion.div
+            variants={withReducedMotion(ctaV, reduce)}
+            className="flex flex-wrap items-center gap-3"
+          >
+            <MagneticButton>
+              <Button
+                asChild
+                size="lg"
+                className="bg-accent-gold text-accent-gold-foreground shadow-[0_0_28px_-8px_var(--accent-gold)] hover:bg-accent-gold/90"
+              >
+                <Link href="#work">
+                  Explore My Work
+                  <ArrowUpRight className="size-4" />
+                </Link>
+              </Button>
+            </MagneticButton>
+            <MagneticButton>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="border-accent-gold/40 text-foreground hover:bg-accent-gold/10 hover:text-accent-gold"
+              >
+                <Link href="#contact">Let&apos;s Build Something</Link>
+              </Button>
+            </MagneticButton>
+          </motion.div>
 
           {/* Socials */}
-          <ul className="flex items-center gap-2 pt-1">
+          <motion.ul
+            variants={socialsContainer}
+            initial={reduce ? false : "hidden"}
+            animate="show"
+            className="flex items-center gap-2 pt-1"
+          >
             {SOCIALS.map(({ label, Icon }) => (
-              <li key={label}>
+              <motion.li key={label} variants={withReducedMotion(socialItem, reduce)}>
                 <button
                   type="button"
                   onClick={(e) => {
@@ -157,19 +308,23 @@ export function Hero() {
                     });
                   }}
                   aria-label={label}
-                  className="group flex size-10 items-center justify-center rounded-xl border border-border/70 bg-card/60 text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-accent-gold/60 hover:text-accent-gold hover:shadow-[0_0_20px_-6px_var(--accent-gold)]"
+                  className="group relative flex size-10 items-center justify-center rounded-xl border border-border/70 bg-card/60 text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-accent-gold/60 hover:text-accent-gold hover:shadow-[0_0_20px_-6px_var(--accent-gold)]"
                 >
-                  <Icon className="size-4" />
+                  <Icon className="size-4 transition-transform group-hover:scale-110" />
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 rounded-xl ring-0 ring-accent-gold/0 transition-all duration-300 group-hover:ring-2 group-hover:ring-accent-gold/30"
+                  />
                 </button>
-              </li>
+              </motion.li>
             ))}
-          </ul>
+          </motion.ul>
 
           {/* Stats strip */}
           <motion.div
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            variants={statsContainer}
+            initial={reduce ? false : "hidden"}
+            animate="show"
             className="mt-2 grid w-full max-w-3xl grid-cols-2 gap-8 rounded-2xl border border-border/70 bg-card/40 p-6 backdrop-blur-sm sm:grid-cols-4"
           >
             {STATS.map((s) => (
@@ -177,7 +332,7 @@ export function Hero() {
             ))}
           </motion.div>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }

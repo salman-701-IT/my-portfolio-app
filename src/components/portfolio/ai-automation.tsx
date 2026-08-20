@@ -17,6 +17,12 @@ import {
 
 import { Card } from "@/components/ui/card";
 import { SectionHeading } from "./section-heading";
+import { TiltCard } from "./tilt-card";
+import {
+  staggerContainer,
+  staggerItem,
+  withReducedMotion,
+} from "./motion-variants";
 
 interface AIAgent {
   Icon: LucideIcon;
@@ -83,6 +89,11 @@ const AGENTS: AIAgent[] = [
 
 export function AIAutomation() {
   const reduce = useReducedMotion();
+  const agentContainer = withReducedMotion(
+    staggerContainer({ staggerChildren: 0.07, delayChildren: 0.05 }),
+    reduce,
+  );
+  const agentItem = withReducedMotion(staggerItem({ duration: 0.5 }), reduce);
   return (
     <section
       id="ai"
@@ -105,53 +116,51 @@ export function AIAutomation() {
         />
 
         {/* AI Agent grid */}
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {AGENTS.map((agent, idx) => (
-            <motion.div
-              key={agent.role}
-              initial={reduce ? false : { opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{
-                duration: 0.5,
-                ease: [0.22, 1, 0.36, 1],
-                delay: idx * 0.06,
-              }}
-            >
-              <Card className="group relative h-full overflow-hidden p-6 transition-all hover:-translate-y-1.5 hover:border-accent-gold/50 hover:shadow-[0_0_44px_-14px_var(--accent-gold)]">
-                <div className="absolute -right-10 -top-10 size-40 rounded-full bg-accent-gold/5 transition-transform duration-500 group-hover:scale-[1.8]" />
-                <div className="relative flex flex-col gap-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex size-12 items-center justify-center rounded-xl border border-accent-gold/30 bg-accent-gold/10 text-accent-gold transition-all group-hover:scale-110 group-hover:shadow-[0_0_24px_-6px_var(--accent-gold)]">
-                      <agent.Icon className="size-6" />
-                    </span>
-                    <h3 className="font-display text-base font-semibold tracking-tight">
-                      {agent.role}
-                    </h3>
+        <motion.div
+          variants={agentContainer}
+          initial={reduce ? false : "hidden"}
+          whileInView="show"
+          viewport={{ once: true, margin: "-60px" }}
+          className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {AGENTS.map((agent) => (
+            <motion.div key={agent.role} variants={agentItem}>
+              <TiltCard className="h-full">
+                <Card className="group relative h-full overflow-hidden p-6 transition-all hover:-translate-y-1.5 hover:border-accent-gold/50 hover:shadow-[0_0_44px_-14px_var(--accent-gold)]">
+                  <div className="absolute -right-10 -top-10 size-40 rounded-full bg-accent-gold/5 transition-transform duration-500 group-hover:scale-[1.8]" />
+                  <div className="relative flex flex-col gap-4">
+                    <div className="flex items-center gap-3">
+                      <span className="flex size-12 items-center justify-center rounded-xl border border-accent-gold/30 bg-accent-gold/10 text-accent-gold transition-all group-hover:scale-110 group-hover:shadow-[0_0_24px_-6px_var(--accent-gold)]">
+                        <agent.Icon className="size-6" />
+                      </span>
+                      <h3 className="font-display text-base font-semibold tracking-tight">
+                        {agent.role}
+                      </h3>
+                    </div>
+                    <ul className="flex flex-col gap-1.5">
+                      {agent.capabilities.map((cap) => (
+                        <li
+                          key={cap}
+                          className="flex items-start gap-2 text-xs leading-relaxed text-foreground/80"
+                        >
+                          <span className="mt-1.5 size-1 shrink-0 rounded-full bg-accent-gold" />
+                          {cap}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="flex flex-col gap-1.5">
-                    {agent.capabilities.map((cap) => (
-                      <li
-                        key={cap}
-                        className="flex items-start gap-2 text-xs leading-relaxed text-foreground/80"
-                      >
-                        <span className="mt-1.5 size-1 shrink-0 rounded-full bg-accent-gold" />
-                        {cap}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Card>
+                </Card>
+              </TiltCard>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* RAG Knowledge System highlight card (full-width) */}
         <motion.div
-          initial={reduce ? false : { opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={withReducedMotion(staggerItem({ duration: 0.6 }), reduce)}
+          initial={reduce ? false : "hidden"}
+          whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <Card className="mt-10 overflow-hidden p-0">
             <div className="grid gap-0 lg:grid-cols-2">

@@ -13,6 +13,11 @@ import {
 
 import { Card } from "@/components/ui/card";
 import { SectionHeading } from "./section-heading";
+import {
+  staggerContainer,
+  staggerItem,
+  withReducedMotion,
+} from "./motion-variants";
 
 interface CourseTrack {
   Icon: LucideIcon;
@@ -64,6 +69,11 @@ const INTERNSHIP_ROLES = [
 
 export function EdTech() {
   const reduce = useReducedMotion();
+  const trackContainer = withReducedMotion(
+    staggerContainer({ staggerChildren: 0.07, delayChildren: 0.05 }),
+    reduce,
+  );
+  const trackItem = withReducedMotion(staggerItem({ duration: 0.5 }), reduce);
   return (
     <section
       id="edtech"
@@ -84,19 +94,15 @@ export function EdTech() {
         />
 
         {/* Course tracks grid */}
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {TRACKS.map((track, idx) => (
-            <motion.div
-              key={track.title}
-              initial={reduce ? false : { opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{
-                duration: 0.55,
-                ease: [0.22, 1, 0.36, 1],
-                delay: idx * 0.06,
-              }}
-            >
+        <motion.div
+          variants={trackContainer}
+          initial={reduce ? false : "hidden"}
+          whileInView="show"
+          viewport={{ once: true, margin: "-60px" }}
+          className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {TRACKS.map((track) => (
+            <motion.div key={track.title} variants={trackItem}>
               <Card className="group relative h-full overflow-hidden p-6 transition-all hover:-translate-y-1 hover:border-accent-gold/40 hover:shadow-[0_0_36px_-12px_var(--accent-gold)]">
                 <div className="absolute -right-10 -top-10 size-32 rounded-full bg-accent-gold/5 transition-transform duration-500 group-hover:scale-150" />
                 <div className="relative flex flex-col gap-4">
@@ -122,14 +128,14 @@ export function EdTech() {
               </Card>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Internship Ecosystem full-width card */}
         <motion.div
-          initial={reduce ? false : { opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={withReducedMotion(staggerItem({ duration: 0.6 }), reduce)}
+          initial={reduce ? false : "hidden"}
+          whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <Card className="mt-10 overflow-hidden p-8 sm:p-10">
             <div className="absolute -right-12 -top-12 size-44 rounded-full bg-accent-gold/8 blur-3xl" />

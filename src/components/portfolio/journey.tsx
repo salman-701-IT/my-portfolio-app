@@ -13,6 +13,12 @@ import {
 
 import { Card } from "@/components/ui/card";
 import { SectionHeading } from "./section-heading";
+import {
+  fadeLeft,
+  fadeRight,
+  staggerItem,
+  withReducedMotion,
+} from "./motion-variants";
 
 interface JourneyStep {
   Icon: LucideIcon;
@@ -63,12 +69,17 @@ function Step({
   isLast: boolean;
 }) {
   const reduce = useReducedMotion();
+  // Alternate left/right reveal direction for visual rhythm.
+  const stepVariants = withReducedMotion(
+    index % 2 === 0 ? fadeLeft({ delay: 0.05, duration: 0.55 }) : fadeRight({ delay: 0.05, duration: 0.55 }),
+    reduce,
+  );
   return (
     <motion.li
-      initial={reduce ? false : { opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      variants={stepVariants}
+      initial={reduce ? false : "hidden"}
+      whileInView="show"
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: index * 0.1 }}
       className="relative flex flex-1 flex-col items-start gap-4"
     >
       {/* Connector line (horizontal) */}
@@ -114,6 +125,7 @@ function Step({
 }
 
 export function Journey() {
+  const reduce = useReducedMotion();
   return (
     <section
       id="journey"
@@ -161,10 +173,10 @@ export function Journey() {
 
         {/* Pull-quote */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={withReducedMotion(staggerItem({ duration: 0.6 }), reduce)}
+          initial={reduce ? false : "hidden"}
+          whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <Card className="mt-16 overflow-hidden p-8 sm:p-12">
             <div className="absolute -right-12 -top-12 size-44 rounded-full bg-accent-gold/5 blur-2xl" />

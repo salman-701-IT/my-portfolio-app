@@ -27,6 +27,12 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { SectionHeading } from "./section-heading";
+import { TiltCard } from "./tilt-card";
+import {
+  staggerContainer,
+  staggerItem,
+  withReducedMotion,
+} from "./motion-variants";
 import { cn } from "@/lib/utils";
 
 type Category = "AI/ML" | "Software" | "EdTech" | "Automation" | "Web";
@@ -239,8 +245,12 @@ function DetailRow({
   label: string;
   children: React.ReactNode;
 }) {
+  const reduce = useReducedMotion();
   return (
-    <div className="flex flex-col gap-1.5">
+    <motion.div
+      variants={withReducedMotion(staggerItem({ duration: 0.4 }), reduce)}
+      className="flex flex-col gap-1.5"
+    >
       <div className="flex items-center gap-2">
         <Icon className="size-3.5 text-accent-gold" />
         <h4 className="text-[11px] font-semibold uppercase tracking-wide text-accent-gold">
@@ -248,9 +258,15 @@ function DetailRow({
         </h4>
       </div>
       <p className="text-sm leading-relaxed text-muted-foreground">{children}</p>
-    </div>
+    </motion.div>
   );
 }
+
+// Stagger container for Dialog content.
+const dialogContainer = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+};
 
 export function Projects() {
   const reduce = useReducedMotion();
@@ -288,22 +304,37 @@ export function Projects() {
 
         {/* Filter tabs */}
         <div className="mt-10 flex flex-wrap items-center gap-2">
-          {FILTERS.map((f) => (
-            <button
-              key={f}
-              type="button"
-              onClick={() => setFilter(f)}
-              aria-pressed={filter === f}
-              className={cn(
-                "relative rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
-                filter === f
-                  ? "border-accent-gold/60 bg-accent-gold/10 text-accent-gold"
-                  : "border-border/70 bg-card/40 text-muted-foreground hover:border-accent-gold/40 hover:text-foreground",
-              )}
-            >
-              {f}
-            </button>
-          ))}
+          {FILTERS.map((f) => {
+            const isActive = filter === f;
+            return (
+              <button
+                key={f}
+                type="button"
+                onClick={() => setFilter(f)}
+                aria-pressed={isActive}
+                className={cn(
+                  "relative rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
+                  isActive
+                    ? "border-accent-gold/60 bg-accent-gold/10 text-accent-gold"
+                    : "border-border/70 bg-card/40 text-muted-foreground hover:border-accent-gold/40 hover:text-foreground",
+                )}
+              >
+                {isActive ? (
+                  <motion.span
+                    layoutId="filter-tab-pill"
+                    className="absolute inset-0 -z-10 rounded-full"
+                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                    style={{
+                      background:
+                        "linear-gradient(120deg, var(--accent-gold), oklch(0.78 0.12 70))",
+                      opacity: 0.12,
+                    }}
+                  />
+                ) : null}
+                {f}
+              </button>
+            );
+          })}
         </div>
 
         {/* Featured grid */}
@@ -312,17 +343,22 @@ export function Projects() {
           className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           <AnimatePresence mode="popLayout">
-            {visible.map((project) => (
+            {visible.map((project, idx) => (
               <motion.article
                 key={project.id}
                 layout
-                initial={reduce ? false : { opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={reduce ? false : { opacity: 0, scale: 0.96, y: 16 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                transition={{
+                  duration: 0.45,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: idx * 0.05,
+                }}
                 className="group"
               >
-                <Card className="group relative h-full overflow-hidden p-0 transition-all hover:-translate-y-1.5 hover:border-accent-gold/50 hover:shadow-[0_0_44px_-14px_var(--accent-gold)]">
+                <TiltCard className="h-full">
+                  <Card className="group relative h-full overflow-hidden p-0 transition-all hover:-translate-y-1.5 hover:border-accent-gold/50 hover:shadow-[0_0_44px_-14px_var(--accent-gold)]">
                   <button
                     type="button"
                     onClick={() => setSelected(project)}
@@ -400,6 +436,7 @@ export function Projects() {
                     ) : null}
                   </div>
                 </Card>
+              </TiltCard>
               </motion.article>
             ))}
           </AnimatePresence>
@@ -458,8 +495,12 @@ export function Projects() {
       <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
         <DialogContent className="max-h-[90vh] overflow-y-auto max-w-2xl overflow-hidden p-0">
           {selected ? (
-            <>
-              <div className="relative aspect-video w-full overflow-hidden rounded-t-lg">
+            <motion.div
+              variants={reduce ? undefined : dialogContainer}
+              initial={reduce ? false : "hidden"}
+              animate="show"
+            >
+              <motion.div variants={withReducedMotion(staggerItem({ duration: 0.45 }), reduce)} className="relative aspect-video w-full overflow-hidden rounded-t-lg">
                 <Image
                   src={selected.image}
                   alt={`${selected.title} — ${selected.category} product detail`}
@@ -484,13 +525,16 @@ export function Projects() {
                     {selected.category}
                   </Badge>
                 </div>
-              </div>
+              </motion.div>
               <DialogHeader className="px-6 pt-4">
                 <DialogDescription className="sr-only">
                   Detailed project information for {selected.title}
                 </DialogDescription>
               </DialogHeader>
-              <div className="flex flex-col gap-5 px-6 pb-6">
+              <motion.div
+                variants={reduce ? undefined : withReducedMotion(staggerContainer({ staggerChildren: 0.07, delayChildren: 0.1 }), reduce)}
+                className="flex flex-col gap-5 px-6 pb-6"
+              >
                 <DetailRow Icon={Target} label="Problem">
                   {selected.problem}
                 </DetailRow>
@@ -541,22 +585,24 @@ export function Projects() {
                   {selected.futureScope}
                 </DetailRow>
                 {selected.liveUrl ? (
-                  <Button
-                    asChild
-                    className="bg-accent-gold text-accent-gold-foreground hover:bg-accent-gold/90"
-                  >
-                    <a
-                      href={selected.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                  <motion.div variants={withReducedMotion(staggerItem({ duration: 0.4 }), reduce)}>
+                    <Button
+                      asChild
+                      className="bg-accent-gold text-accent-gold-foreground hover:bg-accent-gold/90"
                     >
-                      <ExternalLink className="size-4" />
-                      Visit Live Site
-                    </a>
-                  </Button>
+                      <a
+                        href={selected.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <ExternalLink className="size-4" />
+                        Visit Live Site
+                      </a>
+                    </Button>
+                  </motion.div>
                 ) : null}
-              </div>
-            </>
+              </motion.div>
+            </motion.div>
           ) : null}
         </DialogContent>
       </Dialog>

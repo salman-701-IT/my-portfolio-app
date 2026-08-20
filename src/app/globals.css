@@ -220,6 +220,58 @@
   background: oklch(0.83 0.13 82 / 0.7);
 }
 
+@keyframes marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.marquee-track-left {
+  animation: marquee-left 38s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track-right {
+  animation: marquee-right 44s linear infinite;
+  will-change: transform;
+}
+
+.marquee-pause:hover .marquee-track-left,
+.marquee-pause:hover .marquee-track-right {
+  animation-play-state: paused;
+}
+
+/* Floating bob for decorative blobs — GPU-friendly transform only. */
+@keyframes float-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+}
+
+.animate-float-bob {
+  animation: float-bob 8s ease-in-out infinite;
+}
+
+.animate-float-bob-slow {
+  animation: float-bob 12s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

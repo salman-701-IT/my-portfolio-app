@@ -7,6 +7,7 @@ import { Moon, Sun, Menu, ArrowUpRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import { MagneticButton } from "./magnetic-button";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -111,16 +112,18 @@ export function Navbar() {
         {/* Actions */}
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Button
-            asChild
-            size="sm"
-            className="hidden bg-accent-gold text-accent-gold-foreground shadow-[0_0_24px_-8px_var(--accent-gold)] hover:bg-accent-gold/90 md:inline-flex"
-          >
-            <Link href="#contact">
-              Let&apos;s Talk
-              <ArrowUpRight className="size-3.5" />
-            </Link>
-          </Button>
+          <MagneticButton>
+            <Button
+              asChild
+              size="sm"
+              className="hidden bg-accent-gold text-accent-gold-foreground shadow-[0_0_24px_-8px_var(--accent-gold)] hover:bg-accent-gold/90 md:inline-flex"
+            >
+              <Link href="#contact">
+                Let&apos;s Talk
+                <ArrowUpRight className="size-3.5" />
+              </Link>
+            </Button>
+          </MagneticButton>
 
           {/* Mobile sheet */}
           <Sheet open={open} onOpenChange={setOpen}>

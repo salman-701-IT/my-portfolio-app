@@ -1,7 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import {
   Briefcase,
   GraduationCap,
@@ -17,6 +23,12 @@ import {
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SectionHeading } from "./section-heading";
+import {
+  fadeRight,
+  staggerContainer,
+  staggerItem,
+  withReducedMotion,
+} from "./motion-variants";
 
 interface TimelineEntry {
   period: string;
@@ -132,20 +144,21 @@ function TimelineItem({
   const reduce = useReducedMotion();
   const isLast = index === ENTRIES.length - 1;
   const Icon = entry.type === "intern" ? GraduationCap : Briefcase;
+  const itemVariants = withReducedMotion(
+    fadeRight({ delay: 0.05, duration: 0.55 }),
+    reduce,
+  );
 
   return (
     <motion.li
-      initial={reduce ? false : { opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: index * 0.08 }}
+      variants={itemVariants}
       className="relative pl-12 sm:pl-16"
     >
-      {/* Vertical line */}
+      {/* Per-item gradient track (static, behind the drawn line). */}
       {!isLast ? (
         <span
           aria-hidden="true"
-          className="absolute left-[18px] top-10 bottom-0 w-px bg-gradient-to-b from-accent-gold/60 via-border to-transparent sm:left-[22px]"
+          className="absolute left-[18px] top-10 bottom-0 w-px bg-gradient-to-b from-accent-gold/30 via-border to-transparent sm:left-[22px]"
         />
       ) : null}
 
@@ -206,6 +219,24 @@ function TimelineItem({
 
 export function Experience() {
   const reduce = useReducedMotion();
+  const listRef = React.useRef<HTMLOListElement | null>(null);
+  const timelineContainer = withReducedMotion(
+    staggerContainer({ staggerChildren: 0.12, delayChildren: 0.05 }),
+    reduce,
+  );
+
+  // Scroll-linked “draw” line for the timeline. scaleY 0→1 as the section
+  // scrolls through the viewport.
+  const { scrollYProgress } = useScroll({
+    target: listRef,
+    offset: ["start 70%", "end 60%"],
+  });
+  const drawScale = useSpring(useTransform(scrollYProgress, [0, 1], [0, 1]), {
+    stiffness: 120,
+    damping: 28,
+    restDelta: 0.001,
+  });
+
   return (
     <section
       id="experience"
@@ -228,7 +259,22 @@ export function Experience() {
         <div className="mt-14 grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
           {/* LEFT: Experience timeline */}
           <div>
-            <ol className="flex flex-col gap-8">
+            <motion.ol
+              ref={listRef}
+              variants={timelineContainer}
+              initial={reduce ? false : "hidden"}
+              whileInView="show"
+              viewport={{ once: true, margin: "-60px" }}
+              className="relative flex flex-col gap-8"
+            >
+              {/* Scroll-linked drawing line */}
+              {!reduce ? (
+                <motion.span
+                  aria-hidden="true"
+                  style={{ scaleY: drawScale }}
+                  className="pointer-events-none absolute left-[18px] top-2 bottom-2 w-px origin-top bg-gradient-to-b from-accent-gold via-accent-gold/60 to-transparent sm:left-[22px]"
+                />
+              ) : null}
               {ENTRIES.map((entry, idx) => (
                 <TimelineItem
                   key={`${entry.company}-${idx}`}
@@ -236,18 +282,22 @@ export function Experience() {
                   index={idx}
                 />
               ))}
-            </ol>
+            </motion.ol>
           </div>
 
           {/* RIGHT: Education + Achievements */}
-          <div className="flex flex-col gap-6">
+          <motion.div
+            variants={withReducedMotion(
+              staggerContainer({ staggerChildren: 0.1, delayChildren: 0.05 }),
+              reduce,
+            )}
+            initial={reduce ? false : "hidden"}
+            whileInView="show"
+            viewport={{ once: true, margin: "-80px" }}
+            className="flex flex-col gap-6"
+          >
             {/* Education card */}
-            <motion.div
-              initial={reduce ? false : { opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            >
+            <motion.div variants={withReducedMotion(staggerItem({ duration: 0.55 }), reduce)}>
               <Card className="group relative overflow-hidden p-6">
                 <div className="absolute -right-12 -top-12 size-44 rounded-full bg-accent-gold/5 blur-2xl transition-transform duration-500 group-hover:scale-150" />
                 <div className="relative flex h-full flex-col gap-5">
@@ -301,23 +351,19 @@ export function Experience() {
             </motion.div>
 
             {/* Achievements grid */}
-            <div>
+            <motion.div variants={withReducedMotion(staggerItem({ duration: 0.55 }), reduce)}>
               <h3 className="font-display text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
                 Achievements
               </h3>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                {ACHIEVEMENTS.map((a, idx) => (
-                  <motion.div
-                    key={a.title}
-                    initial={reduce ? false : { opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-60px" }}
-                    transition={{
-                      duration: 0.45,
-                      ease: [0.22, 1, 0.36, 1],
-                      delay: 0.05 + idx * 0.05,
-                    }}
-                  >
+              <motion.div
+                variants={withReducedMotion(
+                  staggerContainer({ staggerChildren: 0.06, delayChildren: 0.05 }),
+                  reduce,
+                )}
+                className="mt-4 grid gap-3 sm:grid-cols-2"
+              >
+                {ACHIEVEMENTS.map((a) => (
+                  <motion.div key={a.title} variants={withReducedMotion(staggerItem({ duration: 0.45 }), reduce)}>
                     <Card className="group relative h-full overflow-hidden p-4 transition-all hover:-translate-y-1 hover:border-accent-gold/50 hover:shadow-[0_0_36px_-12px_var(--accent-gold)]">
                       <div className="absolute -right-8 -top-8 size-20 rounded-full bg-accent-gold/5 transition-transform duration-500 group-hover:scale-[1.8]" />
                       <div className="relative flex flex-col gap-2.5">
@@ -336,9 +382,9 @@ export function Experience() {
                     </Card>
                   </motion.div>
                 ))}
-              </div>
-            </div>
-          </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>

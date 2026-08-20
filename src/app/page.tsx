@@ -12,26 +12,35 @@ import { Experience } from "@/components/portfolio/experience";
 import { Contact } from "@/components/portfolio/contact";
 import { Footer } from "@/components/portfolio/footer";
 import { ScrollProgress } from "@/components/portfolio/scroll-progress";
+import { CursorGlow } from "@/components/portfolio/cursor-glow";
+import { ScrollSectionNav } from "@/components/portfolio/scroll-section-nav";
+import { TechMarquee } from "@/components/portfolio/tech-marquee";
+import { PageTransition } from "@/components/portfolio/page-transition";
 
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
       <ScrollProgress />
+      <CursorGlow />
       <Navbar />
-      <main className="flex-1">
-        <Hero />
-        <About />
-        <Journey />
-        <Skills />
-        <Yumaris />
-        <AIAutomation />
-        <Projects />
-        <EdTech />
-        <Leadership />
-        <Experience />
-        <Contact />
-      </main>
+      <PageTransition>
+        <main className="flex-1">
+          <Hero />
+          <About />
+          <Journey />
+          <Skills />
+          <TechMarquee />
+          <Yumaris />
+          <AIAutomation />
+          <Projects />
+          <EdTech />
+          <Leadership />
+          <Experience />
+          <Contact />
+        </main>
+      </PageTransition>
       <Footer />
+      <ScrollSectionNav />
     </div>
   );
 }

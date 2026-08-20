@@ -14,6 +14,11 @@ import {
 
 import { Card } from "@/components/ui/card";
 import { SectionHeading } from "./section-heading";
+import {
+  staggerContainer,
+  staggerItem,
+  withReducedMotion,
+} from "./motion-variants";
 
 interface SkillCategory {
   Icon: LucideIcon;
@@ -102,6 +107,22 @@ function ProficiencyBar({
           className="relative h-full rounded-full bg-gradient-to-r from-accent-gold via-amber-300 to-accent-blue"
         >
           <span className="absolute inset-0 rounded-full bg-gradient-to-r from-accent-gold via-amber-300 to-accent-blue opacity-50 blur-[6px]" />
+          {/* Shimmer sweep — moves across the filled bar after it fills. */}
+          {!reduce ? (
+            <motion.span
+              aria-hidden="true"
+              className="absolute inset-y-0 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+              initial={{ x: "0%", opacity: 0 }}
+              whileInView={{ x: "350%", opacity: 1 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{
+                duration: 0.9,
+                ease: [0.22, 1, 0.36, 1],
+                delay: delay + 1.1,
+              }}
+              style={{ mixBlendMode: "overlay" }}
+            />
+          ) : null}
         </motion.div>
       </div>
     </div>
@@ -110,6 +131,11 @@ function ProficiencyBar({
 
 export function Skills() {
   const reduce = useReducedMotion();
+  const gridContainer = withReducedMotion(
+    staggerContainer({ staggerChildren: 0.08, delayChildren: 0.05 }),
+    reduce,
+  );
+  const cardVariants = withReducedMotion(staggerItem({ duration: 0.5 }), reduce);
   return (
     <section
       id="skills"
@@ -130,20 +156,16 @@ export function Skills() {
         />
 
         {/* Category grid */}
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {CATEGORIES.map((cat, idx) => {
+        <motion.div
+          variants={gridContainer}
+          initial={reduce ? false : "hidden"}
+          whileInView="show"
+          viewport={{ once: true, margin: "-60px" }}
+          className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {CATEGORIES.map((cat) => {
             return (
-              <motion.div
-                key={cat.title}
-                initial={reduce ? false : { opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{
-                  duration: 0.55,
-                  ease: [0.22, 1, 0.36, 1],
-                  delay: idx * 0.05,
-                }}
-              >
+              <motion.div key={cat.title} variants={cardVariants}>
                 <Card className="group relative h-full overflow-hidden p-6 transition-all hover:-translate-y-1 hover:border-accent-gold/40 hover:shadow-[0_0_36px_-12px_var(--accent-gold)]">
                   <div className="absolute -right-10 -top-10 size-32 rounded-full bg-accent-gold/5 transition-transform duration-500 group-hover:scale-150" />
                   <div className="relative flex flex-col gap-4">
@@ -172,7 +194,8 @@ export function Skills() {
           })}
 
           {/* Proficiency card spanning last cell on lg */}
-          <Card className="relative overflow-hidden p-6 lg:col-span-3">
+          <motion.div variants={cardVariants} className="lg:col-span-3">
+            <Card className="relative overflow-hidden p-6">
             <div className="absolute -left-10 -top-10 size-40 rounded-full bg-accent-gold/5 blur-2xl" />
             <div className="relative grid gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
               <div className="sm:col-span-2 lg:col-span-1">
@@ -195,8 +218,9 @@ export function Skills() {
                 ))}
               </div>
             </div>
-          </Card>
-        </div>
+            </Card>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

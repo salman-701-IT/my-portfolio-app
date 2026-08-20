@@ -16,6 +16,13 @@ import {
 import { Card } from "@/components/ui/card";
 import { SectionHeading } from "./section-heading";
 import { useCountUp } from "./use-count-up";
+import {
+  fadeLeft,
+  fadeRight,
+  staggerContainer,
+  staggerItem,
+  withReducedMotion,
+} from "./motion-variants";
 
 const ROLE_CHIPS = [
   "Founder",
@@ -49,7 +56,7 @@ function StatCard({
   suffix: string;
   label: string;
 }) {
-  const { ref, formatted } = useCountUp({ value, duration: 1.8 });
+  const { ref, formatted, isDone } = useCountUp({ value, duration: 1.8 });
   return (
     <Card className="group relative overflow-hidden p-4 transition-all hover:-translate-y-1 hover:border-accent-gold/40 hover:shadow-[0_0_28px_-10px_var(--accent-gold)]">
       <div className="absolute -right-6 -top-6 size-20 rounded-full bg-accent-gold/5 transition-transform group-hover:scale-150" />
@@ -59,12 +66,16 @@ function StatCard({
         </span>
         <div className="flex flex-col">
           <div className="flex items-baseline gap-0.5">
-            <span
+            <motion.span
               ref={ref}
-              className="font-display text-2xl font-bold tracking-tight-display"
+              animate={isDone ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className={`font-display text-2xl font-bold tracking-tight-display transition-colors duration-300 ${
+                isDone ? "text-accent-gold" : "text-foreground"
+              }`}
             >
               {formatted}
-            </span>
+            </motion.span>
             <span className="font-display text-lg font-bold text-accent-gold">
               {suffix}
             </span>
@@ -78,6 +89,10 @@ function StatCard({
 
 export function About() {
   const reduce = useReducedMotion();
+  const rightColVariants = withReducedMotion(
+    staggerContainer({ staggerChildren: 0.1, delayChildren: 0.05 }),
+    reduce,
+  );
   return (
     <section
       id="about"
@@ -102,10 +117,10 @@ export function About() {
         <div className="mt-14 grid items-start gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
           {/* Monogram card */}
           <motion.div
-            initial={reduce ? false : { opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            variants={withReducedMotion(fadeRight(), reduce)}
+            initial={reduce ? false : "hidden"}
+            whileInView="show"
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="relative mx-auto w-full max-w-sm lg:sticky lg:top-24"
           >
             <div className="absolute -inset-3 -z-10 rounded-[2rem] bg-gradient-to-br from-accent-gold/20 via-accent-blue/8 to-transparent blur-2xl" />
@@ -154,13 +169,16 @@ export function About() {
 
           {/* Text + role chips + stat cards */}
           <motion.div
-            initial={reduce ? false : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={rightColVariants}
+            initial={reduce ? false : "hidden"}
+            whileInView="show"
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
             className="flex flex-col gap-8"
           >
-            <div className="space-y-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
+            <motion.div
+              variants={withReducedMotion(fadeLeft(), reduce)}
+              className="space-y-4 text-sm leading-relaxed text-muted-foreground sm:text-base"
+            >
               <p>
                 I&apos;m{" "}
                 <span className="font-medium text-foreground">
@@ -189,10 +207,13 @@ export function About() {
                 automation tools — combining human expertise with software and
                 AI.
               </p>
-            </div>
+            </motion.div>
 
             {/* My role in a project */}
-            <div className="flex flex-col gap-3">
+            <motion.div
+              variants={withReducedMotion(staggerItem(), reduce)}
+              className="flex flex-col gap-3"
+            >
               <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                 My role in a project
               </h3>
@@ -207,17 +228,23 @@ export function About() {
                   </span>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* Stat cards */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <motion.div
+              variants={withReducedMotion(staggerItem(), reduce)}
+              className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
+            >
               {STAT_CARDS.map((s) => (
                 <StatCard key={s.label} {...s} />
               ))}
-            </div>
+            </motion.div>
 
             {/* Mini brand statement */}
-            <div className="flex items-center gap-3 rounded-xl border border-border/70 bg-muted/30 p-4">
+            <motion.div
+              variants={withReducedMotion(staggerItem(), reduce)}
+              className="flex items-center gap-3 rounded-xl border border-border/70 bg-muted/30 p-4"
+            >
               <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-accent-gold/30 bg-accent-gold/10 text-accent-gold">
                 <Lightbulb className="size-4" />
               </span>
@@ -225,7 +252,7 @@ export function About() {
                 Problem first. Technology second.{" "}
                 <span className="text-accent-gold">Impact always.</span>
               </p>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

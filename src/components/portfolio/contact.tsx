@@ -25,6 +25,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { SectionHeading } from "./section-heading";
+import { MagneticButton } from "./magnetic-button";
+import {
+  fadeLeft,
+  fadeRight,
+  withReducedMotion,
+} from "./motion-variants";
 import { contactSchema, type ContactInput } from "@/lib/validations";
 import { cn } from "@/lib/utils";
 
@@ -110,6 +116,8 @@ function Field({ id, label, error, children, required, hint }: FieldProps) {
 export function Contact() {
   const reduce = useReducedMotion();
   const [submitted, setSubmitted] = React.useState(false);
+  const leftCol = withReducedMotion(fadeRight(), reduce);
+  const rightCol = withReducedMotion(fadeLeft(), reduce);
 
   const {
     register,
@@ -188,10 +196,10 @@ export function Contact() {
         <div className="mt-14 grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
           {/* Left — info */}
           <motion.div
-            initial={reduce ? false : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={leftCol}
+            initial={reduce ? false : "hidden"}
+            whileInView="show"
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col gap-6"
           >
             <Card className="relative overflow-hidden p-6">
@@ -280,10 +288,10 @@ export function Contact() {
 
           {/* Right — form */}
           <motion.div
-            initial={reduce ? false : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={rightCol}
+            initial={reduce ? false : "hidden"}
+            whileInView="show"
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
           >
             <Card className="relative h-full overflow-hidden p-6 sm:p-8">
               <div className="absolute -left-10 -bottom-10 size-40 rounded-full bg-accent-gold/5 blur-2xl" />
@@ -354,28 +362,30 @@ export function Contact() {
                   />
                 </Field>
 
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="h-11 w-full bg-accent-gold text-accent-gold-foreground shadow-[0_0_28px_-8px_var(--accent-gold)] hover:bg-accent-gold/90"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="size-4 animate-spin" />
-                      Sending…
-                    </>
-                  ) : submitted ? (
-                    <>
-                      <CheckCircle2 className="size-4" />
-                      Sent!
-                    </>
-                  ) : (
-                    <>
-                      <Send className="size-4" />
-                      Send Message
-                    </>
-                  )}
-                </Button>
+                <MagneticButton className="w-full">
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="h-11 w-full bg-accent-gold text-accent-gold-foreground shadow-[0_0_28px_-8px_var(--accent-gold)] hover:bg-accent-gold/90"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="size-4 animate-spin" />
+                        Sending…
+                      </>
+                    ) : submitted ? (
+                      <>
+                        <CheckCircle2 className="size-4" />
+                        Sent!
+                      </>
+                    ) : (
+                      <>
+                        <Send className="size-4" />
+                        Send Message
+                      </>
+                    )}
+                  </Button>
+                </MagneticButton>
                 <p className="text-center text-[11px] text-muted-foreground">
                   By submitting, you agree to be contacted about your inquiry.
                   No spam, ever.
