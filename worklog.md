@@ -409,3 +409,57 @@ Work Log:
 
 Stage Summary:
 - Animation enhancement layer is browser-verified and fully functional. Premium motion added across all sections without breaking layout, content, or interactivity. Task complete.
+
+---
+Task ID: 22
+Agent: orchestrator (main)
+Task: Build a code-editor / terminal-style loading screen (boot sequence) that plays on initial page load, then fades into the site.
+
+Plan:
+- New component src/components/portfolio/loading-screen.tsx
+- Full-screen fixed overlay, near-black bg, monospace (Geist Mono)
+- Fake terminal boot lines typed out one-by-one (themed: booting portfolio, loading fonts, mounting AI agents, linking Yumaris, warming scroll animations, ready)
+- Gold progress bar filling as lines complete
+- Blinking cursor
+- Window chrome: gold dots + filename tab "salman-khan.tsx"
+- Fade out via AnimatePresence after completion
+- sessionStorage guard (show once per session, no repeat annoyance)
+- prefers-reduced-motion: skip typing, brief static ready then fast fade
+- Integrate into layout.tsx (inside ThemeProvider, overlays children)
+- SSR-safe: render null on server, mount via useEffect
+
+Stage Summary:
+- Building now.
+
+---
+Task ID: 23
+Agent: orchestrator (main)
+Task: Build + integrate + verify the code-style loading screen.
+
+Work Log:
+- Created src/components/portfolio/loading-screen.tsx — code-editor/terminal boot overlay:
+  - Editor window chrome: gold traffic-light dots + filename tab "salman-khan.tsx" + "loading" badge.
+  - Mono terminal body with line-number gutter; boot lines typed char-by-char:
+    "booting salman-khan-portfolio v2.5.0", "initializing design system", "loading fonts: libre-baskerville, poppins",
+    "mounting hero · about · journey", "calibrating AI agents [6]", "linking yumaris agency ecosystem",
+    "warming scroll animations", "portfolio ready" — each done line gets a gold "✓ ok".
+  - Blinking gold cursor at the end.
+  - Gold-to-blue gradient progress bar fills as lines complete.
+  - Corner status text "compiling portfolio…" -> "ready".
+  - Fades out (opacity + blur) via AnimatePresence after completion.
+  - sessionStorage guard: shows once per session (no repeat on reload).
+  - prefers-reduced-motion: skips typing, brief static hold then fast fade.
+  - SSR-safe: returns null on server, mounts via useEffect.
+- Integrated into src/app/layout.tsx (inside ThemeProvider, before children).
+- `bun run lint` — clean.
+- dev.log — clean, `/` returns 200, no errors.
+- Agent Browser verification:
+  - Loading screen renders on first load. VLM: "No issues" — title bar with dots + salman-khan.tsx, monospace terminal text with line numbers, gold-to-blue progress bar, premium aesthetic.
+  - Fades out cleanly after boot -> hero + nav + 27 section anchors revealed. VLM confirmed hero visible, no overlay.
+  - Session guard: reload correctly SKIPS the loader (no repeat annoyance).
+  - Core interactions intact: project filter AI/ML -> AI Business Assistant + AI Document Retrieval.
+  - Sticky footer preserved (flex-1 main + mt-auto footer).
+  - Reduced-motion + SSR-safe.
+
+Stage Summary:
+- Code-style loading screen shipped and browser-verified. Plays a terminal boot sequence on first visit, fades into the site, and doesn't repeat in-session. Task complete.

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Libre_Baskerville, Poppins } from "next/font/google"
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
+import { LoadingScreen } from "@/components/portfolio/loading-screen";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -80,6 +81,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <LoadingScreen />
           {children}
           <SonnerToaster position="bottom-right" richColors closeButton />
         </ThemeProvider>
