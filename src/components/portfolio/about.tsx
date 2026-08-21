@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   MapPin,
@@ -125,36 +126,43 @@ export function About() {
           >
             <div className="absolute -inset-3 -z-10 rounded-[2rem] bg-gradient-to-br from-accent-gold/20 via-accent-blue/8 to-transparent blur-2xl" />
             <div className="relative overflow-hidden rounded-3xl border border-accent-gold/30 bg-card p-2">
-              <div className="relative flex aspect-[4/5] flex-col items-center justify-center gap-6 overflow-hidden rounded-2xl border border-border/40 bg-gradient-to-br from-background/60 via-background/30 to-background/60 p-8">
+              <div className="relative flex aspect-[4/5] flex-col items-center justify-end gap-6 overflow-hidden rounded-2xl border border-border/40 bg-gradient-to-br from-background/60 via-background/30 to-background/60">
+                {/* Portrait photo */}
+                <Image
+                  src="/images/salman-portrait.png"
+                  alt="Portrait of Salman Khan S., Founder & CEO of Yumaris Agency"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 90vw, 35vw"
+                  className="object-cover object-center"
+                />
+                {/* Gradient overlay for chip legibility at the bottom */}
                 <div
                   aria-hidden="true"
-                  className="absolute left-1/2 top-[40%] size-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-gold/15 blur-3xl"
+                  className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"
                 />
                 <div
                   aria-hidden="true"
                   className="absolute right-6 top-6 size-24 rounded-full bg-accent-blue/12 blur-2xl"
                 />
-                <span className="font-display relative flex size-40 items-center justify-center rounded-3xl border border-accent-gold/40 bg-background/40 text-7xl font-black tracking-tight-display text-gradient-gold glow-gold-sm">
-                  SK
-                </span>
-                <div className="relative flex flex-col items-center gap-3 text-center">
-                  <span className="font-display text-base font-semibold tracking-tight">
+                <div className="relative flex flex-col items-center gap-3 p-6 pb-7 text-center">
+                  <span className="font-display text-base font-semibold tracking-tight text-foreground">
                     Salman Khan S.
                   </span>
                   <div className="flex flex-wrap items-center justify-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-gold/30 bg-accent-gold/10 px-3 py-1 text-[11px] font-medium text-accent-gold">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-gold/40 bg-background/70 px-3 py-1 text-[11px] font-medium text-accent-gold backdrop-blur-sm">
                       <MapPin className="size-3" />
                       Chennai, India
                     </span>
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-background/60 px-3 py-1 text-[11px] font-medium text-foreground/80">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-background/70 px-3 py-1 text-[11px] font-medium text-foreground/90 backdrop-blur-sm">
                       <GraduationCap className="size-3" />
-                      B.Tech Information Technology
+                      B.Tech IT
                     </span>
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-blue/30 bg-accent-blue/10 px-3 py-1 text-[11px] font-medium text-accent-blue">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-blue/30 bg-background/70 px-3 py-1 text-[11px] font-medium text-accent-blue backdrop-blur-sm">
                       <Building2 className="size-3" />
                       Founder &amp; CEO, Yumaris Agency
                     </span>
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-gold/40 bg-accent-gold/10 px-3 py-1 text-[11px] font-medium text-accent-gold">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-gold/40 bg-background/70 px-3 py-1 text-[11px] font-medium text-accent-gold backdrop-blur-sm">
                       <span className="relative flex size-1.5">
                         <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent-gold opacity-75" />
                         <span className="relative inline-flex size-1.5 rounded-full bg-accent-gold" />

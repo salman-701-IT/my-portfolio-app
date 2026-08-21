@@ -198,7 +198,7 @@ export function Hero() {
 
       <motion.div
         style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
-        className="mx-auto flex max-w-6xl flex-col items-start gap-10 px-6 py-24 md:py-32"
+        className="mx-auto flex max-w-6xl flex-col items-start gap-10 px-6 py-24 md:py-32 lg:grid lg:grid-cols-[1.25fr_0.75fr] lg:items-center lg:gap-12"
       >
         <motion.div
           variants={container}
@@ -330,6 +330,49 @@ export function Hero() {
             {STATS.map((s) => (
               <StatItem key={s.label} {...s} />
             ))}
+          </motion.div>
+        </motion.div>
+
+        {/* Portrait visual (desktop only) */}
+        <motion.div
+          initial={reduce ? false : { opacity: 0, scale: 0.92, y: 24 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+          className="relative mx-auto hidden w-full max-w-sm lg:block"
+        >
+          <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-gradient-to-br from-accent-gold/25 via-accent-blue/10 to-transparent blur-3xl" />
+          <div className="relative aspect-[3/4] overflow-hidden rounded-[1.75rem] border border-accent-gold/30 bg-card/40 p-2 backdrop-blur-sm glow-gold-sm">
+            <div className="relative size-full overflow-hidden rounded-[1.4rem]">
+              <Image
+                src="/images/salman-portrait.png"
+                alt="Salman Khan S. — Founder & CEO of Yumaris Agency"
+                fill
+                priority
+                loading="eager"
+                sizes="(min-width: 1024px) 30vw, 0px"
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+            </div>
+          </div>
+          {/* Floating badge */}
+          <motion.div
+            animate={reduce ? undefined : { y: [0, -8, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -bottom-4 -left-4 flex items-center gap-2 rounded-2xl border border-accent-gold/40 bg-background/80 px-4 py-3 backdrop-blur-md glow-gold-sm"
+          >
+            <span className="relative flex size-2.5">
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent-gold opacity-75" />
+              <span className="relative inline-flex size-2.5 rounded-full bg-accent-gold" />
+            </span>
+            <div className="flex flex-col">
+              <span className="font-display text-xs font-bold tracking-tight text-foreground">
+                Available for work
+              </span>
+              <span className="text-[10px] text-muted-foreground">
+                Founder &middot; Builder &middot; AI Entrepreneur
+              </span>
+            </div>
           </motion.div>
         </motion.div>
       </motion.div>
