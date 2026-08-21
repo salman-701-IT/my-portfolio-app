@@ -28,13 +28,20 @@ function ThemeToggle({ className }: { className?: string }) {
   React.useEffect(() => setMounted(true), []);
 
   const isDark = theme === "dark";
+  // Stable label until mounted to avoid SSR/CSR hydration mismatch
+  // (next-themes resolves `theme` only on the client).
+  const ariaLabel = mounted
+    ? isDark
+      ? "Switch to light theme"
+      : "Switch to dark theme"
+    : "Toggle theme";
 
   return (
     <Button
       type="button"
       variant="ghost"
       size="icon"
-      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+      aria-label={ariaLabel}
       onClick={() => setTheme(isDark ? "light" : "dark")}
       className={cn("relative", className)}
     >
